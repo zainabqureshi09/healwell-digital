@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
-import { chatComplete, embedText, type ChatMsg } from "./lovable-ai.server";
+import { chatComplete, embedText, type ChatMsg } from "./ai.server";
 
 const CLINIC_FACTS = `
 Clinic: Dr. Muhammad Tanveer Physiotherapist

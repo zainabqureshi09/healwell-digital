@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { MessageCircle, Send, X, CalendarPlus, Loader2 } from "lucide-react";
+import { MessageCircle, Send, X, CalendarPlus, Loader2, Sparkles } from "lucide-react";
 import { ragChat, captureLead } from "@/lib/chat.functions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -39,7 +39,13 @@ export function ChatWidget() {
   const [busy, setBusy] = useState(false);
   const [showLead, setShowLead] = useState(false);
   const [conversationId, setConversationId] = useState<string | undefined>();
-  const [lead, setLead] = useState({ name: "", phone: "", location: "", problem: "", preferredTime: "" });
+  const [lead, setLead] = useState({
+    name: "",
+    phone: "",
+    location: "",
+    problem: "",
+    preferredTime: "",
+  });
   const [leadBusy, setLeadBusy] = useState(false);
 
   const chat = useServerFn(ragChat);
@@ -65,13 +71,22 @@ export function ChatWidget() {
     try {
       const res = await chat({ data: { message: content, sessionId: getSessionId(), history } });
       setConversationId(res.conversationId);
-      setMessages((m) => [...m, { role: "assistant", content: res.reply, bookIntent: res.bookIntent }]);
+      setMessages((m) => [
+        ...m,
+        { role: "assistant", content: res.reply, bookIntent: res.bookIntent },
+      ]);
       if (res.bookIntent) {
         setLead((l) => ({ ...l, problem: l.problem || content }));
       }
     } catch (e) {
       const msg = e instanceof Error ? e.message : "Something went wrong";
-      setMessages((m) => [...m, { role: "assistant", content: `Sorry — ${msg}. You can reach us directly on WhatsApp: +92 342 7160092.` }]);
+      setMessages((m) => [
+        ...m,
+        {
+          role: "assistant",
+          content: `Sorry — ${msg}. You can reach us directly on WhatsApp: +92 342 7160092.`,
+        },
+      ]);
     } finally {
       setBusy(false);
     }
@@ -104,65 +119,68 @@ export function ChatWidget() {
     return (
       <button
         onClick={() => setOpen(true)}
-        className="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-2xl transition-transform hover:scale-110"
+        className="fixed bottom-36 right-6 z-50 flex h-14 w-14 items-center justify-center bg-primary text-white shadow-premium transition-transform hover:scale-110"
         aria-label="Open chat"
       >
-        <MessageCircle className="h-6 w-6" />
-        <span className="absolute -top-1 -right-1 flex h-3 w-3">
-          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
-          <span className="relative inline-flex h-3 w-3 rounded-full bg-primary" />
-        </span>
+        <Sparkles className="h-5 w-5" />
       </button>
     );
   }
 
   return (
-    <div className="fixed bottom-5 right-5 z-50 flex h-[600px] max-h-[85vh] w-[380px] max-w-[calc(100vw-2.5rem)] flex-col overflow-hidden rounded-2xl border bg-background shadow-2xl">
-      <div className="flex items-center justify-between bg-primary px-4 py-3 text-primary-foreground">
+    <div className="fixed bottom-6 right-6 z-50 flex h-[600px] max-h-[85vh] w-[380px] max-w-[calc(100vw-2.5rem)] flex-col overflow-hidden border border-border bg-white shadow-premium animate-fade-up">
+      <div className="flex items-center justify-between bg-primary px-6 py-4 text-white">
         <div>
-          <div className="text-sm font-semibold">Clinic Assistant</div>
-          <div className="text-xs opacity-80">Dr. Muhammad Tanveer Physiotherapy</div>
+          <div className="text-sm font-display font-bold uppercase tracking-widest">
+            Medical Assistant
+          </div>
+          <div className="text-[10px] opacity-70 font-semibold uppercase tracking-tighter">
+            Elite Physio Concierge
+          </div>
         </div>
-        <button onClick={() => setOpen(false)} aria-label="Close" className="rounded-md p-1 hover:bg-white/10">
-          <X className="h-4 w-4" />
+        <button
+          onClick={() => setOpen(false)}
+          aria-label="Close"
+          className="p-1 hover:bg-white/10 transition-colors"
+        >
+          <X className="h-5 w-5" />
         </button>
       </div>
 
-      <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto px-3 py-3 text-sm">
+      <div ref={scrollRef} className="flex-1 space-y-4 overflow-y-auto px-6 py-6 text-sm">
         {messages.map((m, i) => (
           <div key={i} className={m.role === "user" ? "flex justify-end" : ""}>
             <div
               className={
                 m.role === "user"
-                  ? "max-w-[85%] rounded-2xl rounded-br-sm bg-primary px-3 py-2 text-primary-foreground"
-                  : "max-w-[90%] whitespace-pre-wrap text-foreground"
+                  ? "max-w-[85%] bg-primary text-white px-4 py-3 text-sm font-medium"
+                  : "max-w-[90%] whitespace-pre-wrap text-ink leading-relaxed"
               }
             >
               {m.content}
               {m.bookIntent && m.role === "assistant" && (
-                <Button
-                  size="sm"
-                  className="mt-2 w-full"
+                <button
+                  className="mt-4 w-full bg-primary text-white px-4 py-3 text-xs font-bold uppercase tracking-widest hover:bg-secondary transition-colors"
                   onClick={() => setShowLead(true)}
                 >
-                  <CalendarPlus className="mr-2 h-4 w-4" /> Book Appointment
-                </Button>
+                  Book Appointment
+                </button>
               )}
             </div>
           </div>
         ))}
         {busy && (
-          <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <Loader2 className="h-3 w-3 animate-spin" /> Thinking…
+          <div className="flex items-center gap-2 text-[10px] uppercase font-bold text-muted-foreground">
+            <Loader2 className="h-3 w-3 animate-spin" /> Analyzing...
           </div>
         )}
         {!busy && messages.length === 1 && (
-          <div className="flex flex-wrap gap-1.5 pt-2">
+          <div className="flex flex-wrap gap-2 pt-4">
             {SUGGESTIONS.map((s) => (
               <button
                 key={s}
                 onClick={() => send(s)}
-                className="rounded-full border bg-muted/50 px-3 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted"
+                className="border border-border bg-background px-4 py-2 text-[10px] uppercase font-bold text-muted-foreground transition-all hover:border-primary hover:text-primary"
               >
                 {s}
               </button>
@@ -171,23 +189,62 @@ export function ChatWidget() {
         )}
 
         {showLead && (
-          <form onSubmit={onSubmitLead} className="space-y-2 rounded-xl border bg-muted/30 p-3">
-            <div className="text-xs font-semibold text-foreground">Book an appointment</div>
-            <Input required placeholder="Your name" value={lead.name} onChange={(e) => setLead({ ...lead, name: e.target.value })} />
-            <Input required placeholder="Phone (e.g. 03001234567)" value={lead.phone} onChange={(e) => setLead({ ...lead, phone: e.target.value })} />
-            <Input placeholder="Area / Location in Karachi" value={lead.location} onChange={(e) => setLead({ ...lead, location: e.target.value })} />
-            <Textarea placeholder="Briefly describe your problem" value={lead.problem} onChange={(e) => setLead({ ...lead, problem: e.target.value })} rows={2} />
-            <Input placeholder="Preferred time (e.g. Mon evening)" value={lead.preferredTime} onChange={(e) => setLead({ ...lead, preferredTime: e.target.value })} />
-            <div className="text-[10px] text-muted-foreground">
-              Not a substitute for medical diagnosis. We'll contact you to confirm.
+          <form
+            onSubmit={onSubmitLead}
+            className="space-y-4 border border-primary/10 bg-background p-6"
+          >
+            <div className="text-xs font-bold uppercase tracking-widest text-primary">
+              Secure Booking
             </div>
-            <div className="flex gap-2">
-              <Button type="submit" size="sm" disabled={leadBusy} className="flex-1">
-                {leadBusy ? <Loader2 className="h-3 w-3 animate-spin" /> : "Send Request"}
-              </Button>
-              <Button type="button" size="sm" variant="ghost" onClick={() => setShowLead(false)}>
+            <Input
+              required
+              placeholder="Your name"
+              value={lead.name}
+              onChange={(e) => setLead({ ...lead, name: e.target.value })}
+              className="bg-white border-b border-border p-3 text-xs"
+            />
+            <Input
+              required
+              placeholder="Phone (e.g. 03001234567)"
+              value={lead.phone}
+              onChange={(e) => setLead({ ...lead, phone: e.target.value })}
+              className="bg-white border-b border-border p-3 text-xs"
+            />
+            <Input
+              placeholder="Area / Location in Karachi"
+              value={lead.location}
+              onChange={(e) => setLead({ ...lead, location: e.target.value })}
+              className="bg-white border-b border-border p-3 text-xs"
+            />
+            <Textarea
+              placeholder="Briefly describe your condition"
+              value={lead.problem}
+              onChange={(e) => setLead({ ...lead, problem: e.target.value })}
+              rows={2}
+              className="bg-white border-b border-border p-3 text-xs resize-none"
+            />
+            <Input
+              placeholder="Preferred time (e.g. Mon evening)"
+              value={lead.preferredTime}
+              onChange={(e) => setLead({ ...lead, preferredTime: e.target.value })}
+              className="bg-white border-b border-border p-3 text-xs"
+            />
+
+            <div className="flex gap-2 pt-2">
+              <button
+                type="submit"
+                disabled={leadBusy}
+                className="flex-1 bg-primary text-white py-3 text-[10px] font-bold uppercase tracking-widest hover:bg-secondary transition-colors"
+              >
+                {leadBusy ? <Loader2 className="h-3 w-3 animate-spin" /> : "Request Visit"}
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowLead(false)}
+                className="px-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground hover:text-ink"
+              >
                 Cancel
-              </Button>
+              </button>
             </div>
           </form>
         )}
@@ -198,21 +255,25 @@ export function ChatWidget() {
           e.preventDefault();
           send(input);
         }}
-        className="flex items-center gap-2 border-t bg-background p-2"
+        className="flex items-center gap-2 border-t border-border bg-white p-4"
       >
-        <Input
+        <input
           ref={inputRef}
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Type your question…"
+          placeholder="Type your question..."
           disabled={busy}
-          className="flex-1"
+          className="flex-1 bg-transparent text-sm focus:outline-none"
         />
-        <Button type="submit" size="icon" disabled={busy || !input.trim()}>
-          <Send className="h-4 w-4" />
-        </Button>
+        <button
+          type="submit"
+          disabled={busy || !input.trim()}
+          className="text-primary hover:text-secondary transition-colors"
+        >
+          <Send className="h-5 w-5" />
+        </button>
       </form>
-      <div className="border-t bg-muted/30 px-3 py-1.5 text-[10px] text-muted-foreground">
+      <div className="border-t border-border bg-background px-6 py-3 text-[10px] text-muted-foreground uppercase tracking-tighter">
         Educational info only — not a medical diagnosis.
       </div>
     </div>

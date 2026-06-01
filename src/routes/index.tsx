@@ -1,19 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Toaster } from "@/components/ui/sonner";
-import { Nav } from "@/components/site/Nav";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Hero } from "@/components/site/Hero";
-import { About } from "@/components/site/About";
-import { Services } from "@/components/site/Services";
-import { WhyUs } from "@/components/site/WhyUs";
-import { HomePhysio } from "@/components/site/HomePhysio";
-import { Process } from "@/components/site/Process";
-import { Testimonials } from "@/components/site/Testimonials";
-import { Recovery } from "@/components/site/Recovery";
-import { FAQ } from "@/components/site/FAQ";
+import { Gallery } from "@/components/site/Gallery";
 import { Booking } from "@/components/site/Booking";
 import { MapSection } from "@/components/site/MapSection";
-import { Footer } from "@/components/site/Footer";
-import { StickyContact } from "@/components/site/StickyContact";
 
 const title = "Best Physiotherapist in Karachi | Dr. Muhammad Tanveer — Home Physiotherapy";
 const description =
@@ -24,7 +13,11 @@ export const Route = createFileRoute("/")({
     meta: [
       { title },
       { name: "description", content: description },
-      { name: "keywords", content: "physiotherapist in Karachi, home physiotherapy Karachi, dry needling Karachi, back pain treatment Karachi, sports injury physiotherapist Karachi, physiotherapy at home Karachi" },
+      {
+        name: "keywords",
+        content:
+          "physiotherapist in Karachi, home physiotherapy Karachi, dry needling Karachi, back pain treatment Karachi, sports injury physiotherapist Karachi, physiotherapy at home Karachi",
+      },
       { property: "og:title", content: title },
       { property: "og:description", content: description },
       { property: "og:type", content: "website" },
@@ -64,24 +57,37 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <div className="min-h-screen bg-background">
-      <Nav />
-      <main>
-        <Hero />
-        <About />
-        <Services />
-        <WhyUs />
-        <HomePhysio />
-        <Process />
-        <Testimonials />
-        <Recovery />
-        <FAQ />
-        <Booking />
-        <MapSection />
-      </main>
-      <Footer />
-      <StickyContact />
-      <Toaster position="top-center" richColors />
-    </div>
+    <>
+      <Hero />
+      <div className="bg-white py-12 border-y border-border">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-wrap items-center justify-between gap-8">
+            <div className="max-w-md">
+              <h2 className="text-2xl font-display font-bold text-ink mb-2">Clinical Excellence</h2>
+              <p className="text-sm text-muted-foreground font-medium">
+                Explore our premium services and practitioner experience.
+              </p>
+            </div>
+            <div className="flex gap-4">
+              <Link
+                to="/services"
+                className="text-[10px] uppercase tracking-[0.2em] font-bold text-primary hover:text-secondary transition-colors underline underline-offset-8"
+              >
+                Explore Services
+              </Link>
+              <Link
+                to="/about"
+                className="text-[10px] uppercase tracking-[0.2em] font-bold text-primary hover:text-secondary transition-colors underline underline-offset-8"
+              >
+                The Practitioner
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+      <Gallery limit={8} />
+      <Booking />
+      <MapSection />
+    </>
   );
 }

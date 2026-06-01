@@ -1,51 +1,121 @@
 import { Star, Quote } from "lucide-react";
 
 const reviews = [
-  { name: "Ayesha K.", role: "Back Pain Patient", text: "After months of chronic back pain, Dr. Tanveer's treatment plan changed my life. Within 4 weeks I was back to normal." },
-  { name: "Imran S.", role: "Sports Injury", text: "Recovered from a knee injury in record time. His sports rehab program is genuinely world-class." },
-  { name: "Saima A.", role: "Home Physio (Mother)", text: "Booked home physiotherapy for my elderly mother after stroke. Incredibly professional, patient, and skilled." },
-  { name: "Bilal R.", role: "Post-Surgery", text: "Post-ACL surgery rehab was tough but Dr. Tanveer kept me motivated. I'm playing football again." },
-  { name: "Hina M.", role: "Neck Pain", text: "Dry needling sessions completely resolved my chronic neck stiffness. Highly recommend." },
-  { name: "Tariq H.", role: "Elderly Care", text: "The home visits have been a blessing for my father. Compassionate, on-time, and effective." },
+  {
+    name: "Ayesha K.",
+    role: "Back Pain Patient",
+    text: "After months of chronic back pain, Dr. Tanveer's treatment plan changed my life. Within 4 weeks I was back to normal.",
+  },
+  {
+    name: "Imran S.",
+    role: "Sports Injury",
+    text: "Recovered from a knee injury in record time. His sports rehab program is genuinely world-class.",
+  },
+  {
+    name: "Saima A.",
+    role: "Home Physio (Mother)",
+    text: "Booked home physiotherapy for my elderly mother after stroke. Incredibly professional, patient, and skilled.",
+  },
+  {
+    name: "Bilal R.",
+    role: "Post-Surgery",
+    text: "Post-ACL surgery rehab was tough but Dr. Tanveer kept me motivated. I'm playing football again.",
+  },
+  {
+    name: "Hina M.",
+    role: "Neck Pain",
+    text: "Dry needling sessions completely resolved my chronic neck stiffness. Highly recommend.",
+  },
+  {
+    name: "Tariq H.",
+    role: "Elderly Care",
+    text: "The home visits have been a blessing for my father. Compassionate, on-time, and effective.",
+  },
 ];
 
 export function Testimonials() {
   return (
-    <section id="testimonials" className="py-20 lg:py-28">
+    <section
+      id="testimonials"
+      className="py-24 lg:py-32 bg-white selection:bg-primary/10 overflow-hidden"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-wrap items-end justify-between gap-6">
+        <div className="flex flex-col lg:flex-row items-start justify-between gap-12 mb-20 animate-fade-up">
           <div className="max-w-2xl">
-            <span className="text-xs font-bold tracking-widest uppercase text-primary">Patient Stories</span>
-            <h2 className="mt-3 text-3xl sm:text-4xl lg:text-5xl font-bold text-balance">
-              Real recoveries from real patients.
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-12 h-[1px] bg-primary" />
+              <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-primary">
+                Patient Journeys
+              </span>
+            </div>
+            <h2 className="text-4xl lg:text-6xl font-display font-bold text-ink leading-tight">
+              Stories of <span className="italic text-primary">Recovery</span> and Restored Hope.
             </h2>
           </div>
-          <div className="flex items-center gap-3 rounded-full border border-border bg-card px-5 py-3 shadow-soft">
-            <div className="flex">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Star key={i} className="w-4 h-4 fill-primary text-primary" />
-              ))}
+          <div className="lg:pt-10">
+            <div className="flex items-center gap-4 border border-border px-8 py-6 shadow-premium bg-white">
+              <div className="flex gap-1">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star key={i} className="w-4 h-4 fill-primary text-primary" />
+                ))}
+              </div>
+              <div className="text-sm font-display font-bold text-ink">
+                4.9 / 5.0 (500+ Reviews)
+              </div>
             </div>
-            <div className="text-sm font-semibold">4.9 / 5 · 500+ reviews</div>
           </div>
         </div>
 
-        <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {reviews.map((r) => (
-            <figure key={r.name} className="rounded-2xl border border-border bg-card p-6 hover:shadow-elegant transition-all">
-              <Quote className="w-7 h-7 text-primary/30" />
-              <blockquote className="mt-3 text-foreground/90">{r.text}</blockquote>
-              <figcaption className="mt-5 flex items-center gap-3 pt-4 border-t border-border">
-                <div className="w-10 h-10 rounded-full bg-gradient-primary text-primary-foreground grid place-items-center font-bold">
-                  {r.name[0]}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {reviews.map((r, index) => (
+            <div
+              key={r.name}
+              className={`relative p-10 lg:p-12 border border-border hover:border-primary/20 transition-all duration-500 group ${
+                index === 1 ? "lg:-translate-y-12 lg:bg-background" : "bg-white"
+              }`}
+            >
+              <Quote className="absolute top-10 right-10 w-12 h-12 text-primary/5 group-hover:text-primary/10 transition-colors" />
+
+              <div className="relative z-10">
+                <div className="flex gap-1 mb-8">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star key={i} className="w-3 h-3 fill-primary text-primary" />
+                  ))}
                 </div>
-                <div>
-                  <div className="font-bold text-sm">{r.name}</div>
-                  <div className="text-xs text-muted-foreground">{r.role}</div>
+
+                <blockquote className="text-lg text-ink font-medium leading-relaxed mb-10">
+                  "{r.text}"
+                </blockquote>
+
+                <div className="flex items-center gap-4 pt-8 border-t border-border">
+                  <div className="w-12 h-12 bg-primary/10 text-primary flex items-center justify-center font-display font-bold text-lg">
+                    {r.name[0]}
+                  </div>
+                  <div>
+                    <div className="font-display font-bold text-ink">{r.name}</div>
+                    <div className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground">
+                      {r.role}
+                    </div>
+                  </div>
                 </div>
-              </figcaption>
-            </figure>
+              </div>
+            </div>
           ))}
+        </div>
+
+        <div className="mt-20 text-center">
+          <div className="inline-flex items-center gap-4">
+            <span className="text-sm text-muted-foreground">
+              Trusted by patients across Karachi
+            </span>
+            <div className="w-20 h-[1px] bg-border" />
+            <a
+              href="#booking"
+              className="text-sm font-bold text-primary uppercase tracking-widest hover:text-secondary transition-colors underline underline-offset-8"
+            >
+              Write a Review
+            </a>
+          </div>
         </div>
       </div>
     </section>
