@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
@@ -170,17 +170,18 @@ function KBPanel() {
   const ingest = useServerFn(ingestDocument);
   const del = useServerFn(deleteDocument);
 
-  async function refresh() {
+  const refresh = useCallback(async () => {
     try {
       const d = await list();
       setDocs(d as typeof docs);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Failed to load");
     }
-  }
+  }, [list]);
+
   useEffect(() => {
     refresh();
-  }, []);
+  }, [refresh]);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -305,17 +306,18 @@ function LeadsPanel() {
   const list = useServerFn(listLeads);
   const upd = useServerFn(updateLeadStatus);
 
-  async function refresh() {
+  const refresh = useCallback(async () => {
     try {
       const d = await list();
       setLeads(d as typeof leads);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Failed to load");
     }
-  }
+  }, [list]);
+
   useEffect(() => {
     refresh();
-  }, []);
+  }, [refresh]);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -452,7 +454,7 @@ function AnalyticsPanel() {
     get()
       .then((d) => setStats(d as typeof stats))
       .catch((e) => toast.error(e.message));
-  }, []);
+  }, [get]);
 
   if (!stats)
     return (

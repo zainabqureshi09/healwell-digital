@@ -68,7 +68,7 @@ export const ragChat = createServerFn({ method: "POST" })
     try {
       const embedding = await embedText(data.message);
       const { data: chunks } = await supabaseAdmin.rpc("match_kb_chunks", {
-        query_embedding: embedding as unknown as string,
+        query_embedding: `[${embedding.join(",")}]`,
         match_count: 5,
       });
       if (chunks && chunks.length) {

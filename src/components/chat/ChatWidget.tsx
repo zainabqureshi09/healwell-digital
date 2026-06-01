@@ -54,6 +54,17 @@ export function ChatWidget() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    const checkHash = () => {
+      if (window.location.hash === "#chat") {
+        setOpen(true);
+      }
+    };
+    checkHash();
+    window.addEventListener("hashchange", checkHash);
+    return () => window.removeEventListener("hashchange", checkHash);
+  }, []);
+
+  useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, busy, showLead]);
 
