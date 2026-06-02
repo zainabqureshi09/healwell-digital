@@ -32,7 +32,7 @@ export function ChatWidget() {
     {
       role: "assistant",
       content:
-        "Assalam-o-Alaikum! I'm Dr. Tanveer's clinic assistant. Ask me about physiotherapy treatments, home visits, pricing, or book an appointment. آپ اردو میں بھی بات کر سکتے ہیں۔",
+        "Assalam-o-Alaikum! I'm Muhammad Tanveer's clinic assistant. Ask me about physiotherapy treatments, home visits, pricing, or book an appointment. آپ اردو میں بھی بات کر سکتے ہیں۔",
     },
   ]);
   const [input, setInput] = useState("");

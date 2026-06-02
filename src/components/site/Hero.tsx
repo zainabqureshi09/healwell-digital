@@ -39,9 +39,8 @@ export function Hero() {
             </h1>
 
             <p className="text-lg lg:text-xl text-muted-foreground max-w-2xl leading-relaxed mb-10 font-medium">
-              Experience handcrafted recovery with Dr. Muhammad Tanveer. Specialized care designed
-              for elite performance and pain-free living, right in the heart of DHA or your own
-              home.
+              Experience handcrafted recovery with Muhammad Tanveer. Specialized care designed for
+              elite performance and pain-free living, right in the heart of DHA or your own home.
             </p>
 
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mb-12">
@@ -97,14 +96,14 @@ export function Hero() {
               <div className="relative aspect-[4/5] overflow-hidden grayscale-[0.2] group-hover:grayscale-0 transition-all duration-700 shadow-premium">
                 <img
                   src={drTanveer}
-                  alt="Dr. Muhammad Tanveer — Expert Physiotherapist"
+                  alt="Muhammad Tanveer — Expert Physiotherapist"
                   className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700"
                 />
               </div>
               {/* Doctor Name Overlay */}
               <div className="absolute -bottom-6 -left-6 bg-white p-6 shadow-premium max-w-[240px]">
                 <div className="font-display font-bold text-xl text-primary leading-tight">
-                  Dr. Muhammad Tanveer
+                  Muhammad Tanveer
                 </div>
                 <div className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground mt-2">
                   DPT (Doctor of Physical Therapy)

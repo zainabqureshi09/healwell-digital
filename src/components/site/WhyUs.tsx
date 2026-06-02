@@ -50,7 +50,7 @@ export function WhyUs() {
               Rehabilitation.
             </h2>
             <p className="text-lg text-muted-foreground leading-relaxed mb-10">
-              Dr. Muhammad Tanveer brings a wealth of knowledge and a compassionate touch to
+              Muhammad Tanveer brings a wealth of knowledge and a compassionate touch to
               physiotherapy. Our practice is built on the foundation of medical integrity,
               continuous learning, and a relentless pursuit of patient recovery.
             </p>

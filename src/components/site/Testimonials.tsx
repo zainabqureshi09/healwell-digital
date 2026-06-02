@@ -1,10 +1,11 @@
 import { Star, Quote } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 
 const reviews = [
   {
     name: "Ayesha K.",
     role: "Back Pain Patient",
-    text: "After months of chronic back pain, Dr. Tanveer's treatment plan changed my life. Within 4 weeks I was back to normal.",
+    text: "After months of chronic back pain, Muhammad Tanveer's treatment plan changed my life. Within 4 weeks I was back to normal.",
   },
   {
     name: "Imran S.",
@@ -19,7 +20,7 @@ const reviews = [
   {
     name: "Bilal R.",
     role: "Post-Surgery",
-    text: "Post-ACL surgery rehab was tough but Dr. Tanveer kept me motivated. I'm playing football again.",
+    text: "Post-ACL surgery rehab was tough but Muhammad Tanveer kept me motivated. I'm playing football again.",
   },
   {
     name: "Hina M.",
@@ -109,12 +110,13 @@ export function Testimonials() {
               Trusted by patients across Karachi
             </span>
             <div className="w-20 h-[1px] bg-border" />
-            <a
-              href="#booking"
+            <Link
+              to="/"
+              hash="booking"
               className="text-sm font-bold text-primary uppercase tracking-widest hover:text-secondary transition-colors underline underline-offset-8"
             >
               Write a Review
-            </a>
+            </Link>
           </div>
         </div>
       </div>

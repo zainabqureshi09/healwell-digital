@@ -5,7 +5,7 @@ export const Route = createFileRoute("/services")({
   component: ServicesPage,
   head: () => ({
     meta: [
-      { title: "Clinical Services | Dr. Muhammad Tanveer Physiotherapist" },
+      { title: "Clinical Services | Muhammad Tanveer Physiotherapist" },
       {
         name: "description",
         content:

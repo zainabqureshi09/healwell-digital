@@ -5,7 +5,7 @@ export const Route = createFileRoute("/process")({
   component: ProcessPage,
   head: () => ({
     meta: [
-      { title: "Our Methodology | Dr. Muhammad Tanveer Physiotherapist" },
+      { title: "Our Methodology | Muhammad Tanveer Physiotherapist" },
       {
         name: "description",
         content:

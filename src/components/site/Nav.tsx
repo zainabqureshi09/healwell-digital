@@ -40,7 +40,7 @@ export function Nav() {
           </div>
           <div className="flex flex-col">
             <span className="font-display font-bold text-lg leading-none text-primary">
-              Dr. Tanveer
+              Muhammad Tanveer
             </span>
             <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-semibold mt-1">
               Physiotherapist

@@ -4,9 +4,9 @@ import { Gallery } from "@/components/site/Gallery";
 import { Booking } from "@/components/site/Booking";
 import { MapSection } from "@/components/site/MapSection";
 
-const title = "Best Physiotherapist in Karachi | Dr. Muhammad Tanveer — Home Physiotherapy";
+const title = "Best Physiotherapist in Karachi | Muhammad Tanveer — Home Physiotherapy";
 const description =
-  "Dr. Muhammad Tanveer — trusted physiotherapist in Karachi. Home physiotherapy, back pain, sports injury, dry needling & post-surgery rehab. Book today: 0342 7160092.";
+  "Muhammad Tanveer — trusted physiotherapist in Karachi. Home physiotherapy, back pain, sports injury, dry needling & post-surgery rehab. Book today: 0342 7160092.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -31,7 +31,7 @@ export const Route = createFileRoute("/")({
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "MedicalBusiness",
-          name: "Dr. Muhammad Tanveer Physiotherapist",
+          name: "Muhammad Tanveer Physiotherapist",
           image: "/",
           telephone: "+92-342-7160092",
           priceRange: "$$",

@@ -78,14 +78,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Dr. Muhammad Tanveer | Best Physiotherapist in Karachi" },
+      { title: "Muhammad Tanveer | Best Physiotherapist in Karachi" },
       {
         name: "description",
         content:
           "Professional physiotherapy services in Karachi. Specializing in home care, sports injuries, and rehabilitation.",
       },
-      { name: "author", content: "Dr. Muhammad Tanveer" },
-      { property: "og:title", content: "Dr. Muhammad Tanveer | Physiotherapist" },
+      { name: "author", content: "Muhammad Tanveer" },
+      { property: "og:title", content: "Muhammad Tanveer | Physiotherapist" },
       { property: "og:description", content: "Professional physiotherapy services in Karachi." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
@@ -134,7 +134,6 @@ function RootComponent() {
         <ChatWidget />
         <Toaster richColors position="top-center" />
       </div>
-      <Scripts />
     </QueryClientProvider>
   );
 }

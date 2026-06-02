@@ -5,7 +5,7 @@ export const Route = createFileRoute("/faq")({
   component: FAQPage,
   head: () => ({
     meta: [
-      { title: "Frequently Asked Questions | Dr. Muhammad Tanveer" },
+      { title: "Frequently Asked Questions | Muhammad Tanveer" },
       {
         name: "description",
         content:

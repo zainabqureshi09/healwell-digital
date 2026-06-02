@@ -20,7 +20,7 @@ export function Booking() {
       return;
     }
 
-    const text = `Hi Dr. Tanveer,%0AName: ${encodeURIComponent(name)}%0APhone: ${encodeURIComponent(phone)}%0AService: ${encodeURIComponent(service)}%0AMessage: ${encodeURIComponent(message)}`;
+    const text = `Hi Muhammad Tanveer,%0AName: ${encodeURIComponent(name)}%0APhone: ${encodeURIComponent(phone)}%0AService: ${encodeURIComponent(service)}%0AMessage: ${encodeURIComponent(message)}`;
     window.open(`https://wa.me/923427160092?text=${text}`, "_blank");
     toast.success("Opening WhatsApp — we'll confirm your booking shortly.");
     (e.target as HTMLFormElement).reset();

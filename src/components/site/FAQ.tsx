@@ -20,7 +20,7 @@ const faqs = [
   },
   {
     q: "How many sessions will I need?",
-    a: "It varies by condition. Most patients see meaningful improvement within 4–8 sessions. Dr. Tanveer will share a clear plan after assessment.",
+    a: "It varies by condition. Most patients see meaningful improvement within 4–8 sessions. Muhammad Tanveer will share a clear plan after assessment.",
   },
   {
     q: "Is dry needling painful?",

@@ -5,11 +5,11 @@ export const Route = createFileRoute("/testimonials")({
   component: TestimonialsPage,
   head: () => ({
     meta: [
-      { title: "Patient Success Stories | Dr. Muhammad Tanveer" },
+      { title: "Patient Success Stories | Muhammad Tanveer" },
       {
         name: "description",
         content:
-          "Read real stories of recovery and restored hope from patients treated by Dr. Muhammad Tanveer in Karachi.",
+          "Read real stories of recovery and restored hope from patients treated by Muhammad Tanveer in Karachi.",
       },
     ],
   }),

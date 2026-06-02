@@ -10,7 +10,7 @@ export const Route = createFileRoute("/login")({
   component: LoginPage,
   head: () => ({
     meta: [
-      { title: "Admin Login | Dr. Tanveer Physiotherapy" },
+      { title: "Admin Login | Muhammad Tanveer Physiotherapy" },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -69,7 +69,7 @@ function LoginPage() {
             </div>
             <div className="flex flex-col text-left">
               <span className="font-display font-bold text-xl leading-none text-ink">
-                Dr. Tanveer
+                Muhammad Tanveer
               </span>
               <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-semibold mt-1">
                 Physiotherapist
@@ -81,7 +81,8 @@ function LoginPage() {
             {mode === "login" ? "Medical Portal" : "Admin Registration"}
           </h1>
           <p className="text-muted-foreground text-sm font-medium max-w-xs mx-auto">
-            Authorized access for Dr. Tanveer's healthcare administration and patient management.
+            Authorized access for Muhammad Tanveer's healthcare administration and patient
+            management.
           </p>
         </div>
 
@@ -147,7 +148,7 @@ function LoginPage() {
         </div>
 
         <p className="mt-8 text-center text-[10px] uppercase tracking-tighter text-muted-foreground font-semibold">
-          Secure Medical Portal · Dr. Muhammad Tanveer Physiotherapist
+          Secure Medical Portal · Muhammad Tanveer Physiotherapist
         </p>
       </div>
     </div>

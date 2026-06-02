@@ -1,4 +1,5 @@
 import { Check } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import img from "@/assets/home-physio.jpg";
 
 const benefits = [
@@ -42,12 +43,13 @@ export function HomePhysio() {
               ))}
             </ul>
 
-            <a
-              href="#booking"
+            <Link
+              to="/"
+              hash="booking"
               className="inline-flex items-center justify-center bg-white text-primary px-10 py-4 text-sm font-bold tracking-widest uppercase hover:bg-secondary hover:text-white transition-all duration-300 shadow-premium"
             >
               Book Home Assessment
-            </a>
+            </Link>
           </div>
 
           <div className="lg:col-span-5 relative animate-fade-up [animation-delay:200ms]">

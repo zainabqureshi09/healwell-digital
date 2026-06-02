@@ -4,13 +4,13 @@ import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { chatComplete, embedText, type ChatMsg } from "./ai.server";
 
 const CLINIC_FACTS = `
-Clinic: Dr. Muhammad Tanveer Physiotherapist
+Clinic: Muhammad Tanveer Physiotherapist
 Location: DHA Phase 5, Karachi, Pakistan
 Phone / WhatsApp: +92 342 7160092
 Services: Home Physiotherapy, Dry Needling, Sports Injury Rehabilitation, Back Pain Treatment, Neck Pain Treatment, Stroke Rehabilitation, Elderly Care Physiotherapy, Post-Surgery Rehabilitation, Pain Management Therapy. Male and Female physiotherapists available.
 `.trim();
 
-const SYSTEM_PROMPT = `You are the official patient-support assistant for Dr. Muhammad Tanveer Physiotherapist clinic in DHA Phase 5, Karachi.
+const SYSTEM_PROMPT = `You are the official patient-support assistant for Muhammad Tanveer Physiotherapist clinic in DHA Phase 5, Karachi.
 
 LANGUAGE: Auto-detect the user's language. If they write in Urdu or Roman Urdu, reply in the SAME script they used. Otherwise reply in English. Keep tone warm, professional, concise.
 

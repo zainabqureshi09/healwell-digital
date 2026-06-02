@@ -148,7 +148,7 @@ export function Services() {
             href="https://wa.me/923427160092"
             className="inline-flex items-center justify-center gap-2 bg-primary text-white px-10 py-4 text-sm font-bold tracking-widest uppercase hover:bg-secondary transition-all duration-300"
           >
-            Consult with Dr. Tanveer
+            Consult with Muhammad Tanveer
           </a>
         </motion.div>
       </div>

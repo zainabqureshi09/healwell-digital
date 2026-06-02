@@ -7,7 +7,7 @@ const steps = [
   {
     n: "02",
     title: "Detailed Assessment",
-    desc: "Dr. Tanveer evaluates your condition, history, and goals in person.",
+    desc: "Muhammad Tanveer evaluates your condition, history, and goals in person.",
   },
   {
     n: "03",

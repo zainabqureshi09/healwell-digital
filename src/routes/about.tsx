@@ -7,11 +7,11 @@ export const Route = createFileRoute("/about")({
   component: AboutPage,
   head: () => ({
     meta: [
-      { title: "About Dr. Muhammad Tanveer | Elite Physiotherapy Karachi" },
+      { title: "About Muhammad Tanveer | Elite Physiotherapy Karachi" },
       {
         name: "description",
         content:
-          "Learn about Dr. Muhammad Tanveer, a leading physiotherapist in Karachi with over a decade of experience in clinical rehabilitation and manual therapy.",
+          "Learn about Muhammad Tanveer, a leading physiotherapist in Karachi with over a decade of experience in clinical rehabilitation and manual therapy.",
       },
     ],
   }),

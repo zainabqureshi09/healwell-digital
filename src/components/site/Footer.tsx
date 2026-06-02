@@ -1,4 +1,5 @@
 import { Phone, MessageCircle, MapPin, Mail, Facebook, Instagram } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 
 export function Footer() {
   return (
@@ -6,19 +7,19 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8">
           <div className="lg:col-span-4">
-            <a href="#top" className="flex items-center gap-3">
+            <Link to="/" hash="top" className="flex items-center gap-3">
               <div className="w-12 h-12 bg-white flex items-center justify-center text-primary font-display text-2xl">
                 T
               </div>
               <div className="flex flex-col">
                 <span className="font-display font-bold text-xl leading-none text-white">
-                  Dr. Muhammad Tanveer
+                  Muhammad Tanveer
                 </span>
                 <span className="text-[10px] uppercase tracking-[0.2em] text-white/60 font-semibold mt-1">
                   Physiotherapist
                 </span>
               </div>
-            </a>
+            </Link>
             <p className="mt-8 text-white/70 leading-relaxed text-sm max-w-sm">
               Dedicated to providing elite physiotherapy services. Our mission is to restore
               movement and enhance quality of life through personalized care, whether in-clinic or
@@ -56,12 +57,12 @@ export function Footer() {
                 "Stroke Rehabilitation",
               ].map((s) => (
                 <li key={s}>
-                  <a
-                    href="#services"
+                  <Link
+                    to="/services"
                     className="text-white/60 hover:text-white transition-colors duration-200"
                   >
                     {s}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -73,19 +74,20 @@ export function Footer() {
             </h4>
             <ul className="mt-8 space-y-4 text-sm">
               {[
-                { label: "About Dr. Tanveer", href: "#about" },
-                { label: "Treatment Process", href: "#process" },
-                { label: "Patient Reviews", href: "#testimonials" },
-                { label: "FAQ", href: "#faq" },
-                { label: "Book Appointment", href: "#booking" },
+                { label: "About Muhammad Tanveer", href: "/about" },
+                { label: "Treatment Process", href: "/process" },
+                { label: "Patient Reviews", href: "/testimonials" },
+                { label: "FAQ", href: "/faq" },
+                { label: "Book Appointment", href: "/", hash: "booking" },
               ].map((link) => (
                 <li key={link.label}>
-                  <a
-                    href={link.href}
+                  <Link
+                    to={link.href}
+                    hash={link.hash}
                     className="text-white/60 hover:text-white transition-colors duration-200"
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -145,7 +147,7 @@ export function Footer() {
 
         <div className="mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
           <p className="text-[10px] uppercase tracking-widest text-white/30 font-semibold">
-            © {new Date().getFullYear()} Dr. Muhammad Tanveer Physiotherapist. All rights reserved.
+            © {new Date().getFullYear()} Muhammad Tanveer Physiotherapist. All rights reserved.
           </p>
           <p className="text-[10px] uppercase tracking-widest text-white/30 font-semibold">
             Premium Healthcare Excellence in Karachi

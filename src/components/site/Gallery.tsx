@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Plus, X, ChevronDown } from "lucide-react";
 
 // Dynamically import all gallery images
-const galleryImages = import.meta.glob<string>("@/assets/gallery/*.{jpeg,jpg,png}", {
+const galleryImages = import.meta.glob<string>("../../assets/gallery/*.{jpeg,jpg,png}", {
   eager: true,
   query: "?url",
   import: "default",

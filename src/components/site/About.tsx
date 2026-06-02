@@ -1,4 +1,5 @@
 import { CheckCircle2 } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import doctor from "@/assets/dr-tanveer.jpg";
 
 const points = [
@@ -22,7 +23,7 @@ export function About() {
               <div className="relative aspect-square overflow-hidden shadow-premium grayscale-[0.3] group-hover:grayscale-0 transition-all duration-700">
                 <img
                   src={doctor}
-                  alt="Dr. Muhammad Tanveer, Physiotherapist in Karachi"
+                  alt="Muhammad Tanveer, Physiotherapist in Karachi"
                   className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700"
                 />
               </div>
@@ -47,10 +48,10 @@ export function About() {
               Care.
             </h2>
             <p className="text-lg text-muted-foreground leading-relaxed mb-10 font-medium">
-              Dr. Muhammad Tanveer is a dedicated DPT specialist committed to restoring human
-              movement. His approach integrates advanced manual therapy with evidence-based
-              rehabilitation, ensuring each patient receives an elite healthcare experience tailored
-              to their unique physiological needs.
+              Muhammad Tanveer is a dedicated DPT specialist committed to restoring human movement.
+              His approach integrates advanced manual therapy with evidence-based rehabilitation,
+              ensuring each patient receives an elite healthcare experience tailored to their unique
+              physiological needs.
             </p>
 
             <ul className="grid sm:grid-cols-2 gap-6 mb-12">
@@ -65,18 +66,19 @@ export function About() {
             </ul>
 
             <div className="flex flex-wrap gap-4">
-              <a
-                href="#booking"
+              <Link
+                to="/"
+                hash="booking"
                 className="inline-flex items-center justify-center bg-primary text-white px-10 py-4 text-sm font-bold tracking-widest uppercase hover:bg-secondary transition-all duration-300"
               >
                 Inquire for Treatment
-              </a>
-              <a
-                href="#services"
+              </Link>
+              <Link
+                to="/services"
                 className="inline-flex items-center justify-center border border-primary text-primary px-10 py-4 text-sm font-bold tracking-widest uppercase hover:bg-primary hover:text-white transition-all duration-300"
               >
                 Clinical Services
-              </a>
+              </Link>
             </div>
           </div>
         </div>
