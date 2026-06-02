@@ -11,6 +11,9 @@ export default defineConfig({
       server: {
         entry: "src/server.ts",
       },
+      nitro: {
+        preset: "vercel",
+      },
     }),
   ],
   build: {

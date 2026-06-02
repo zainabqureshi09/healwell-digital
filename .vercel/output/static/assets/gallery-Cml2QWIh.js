@@ -1,0 +1,1 @@
+import{j as r}from"./index-Bp4NEG8r.js";import{G as o}from"./Gallery-BDX3aQ6q.js";import"./chevron-down-CGRha2UD.js";function a(){return r.jsx("div",{className:"pt-20",children:r.jsx(o,{})})}export{a as component};
