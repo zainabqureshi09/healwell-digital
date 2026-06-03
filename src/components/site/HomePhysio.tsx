@@ -1,5 +1,6 @@
 import { Check } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 const benefits = [
   "No travel — recover in familiar surroundings",
@@ -54,10 +55,12 @@ export function HomePhysio() {
             <div className="relative group">
               <div className="absolute -inset-6 border border-white/10 translate-x-6 translate-y-6 group-hover:translate-x-3 group-hover:translate-y-3 transition-transform duration-700" />
               <div className="relative aspect-[4/5] overflow-hidden shadow-2xl grayscale-[0.2] group-hover:grayscale-0 transition-all duration-700">
-                <img
+                <Image
                   src="/assets/home-physio.jpg"
                   alt="Home physiotherapy in Karachi"
-                  className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700"
+                  fill
+                  className="object-cover scale-105 group-hover:scale-100 transition-transform duration-700"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
               </div>
               <div className="absolute -top-8 -left-8 w-32 h-32 border border-white/5 rotate-45 pointer-events-none" />

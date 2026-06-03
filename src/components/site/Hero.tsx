@@ -2,6 +2,7 @@
 
 import { ArrowRight, MessageCircle, Sparkles, Activity, Heart, ShieldCheck } from "lucide-react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import Image from "next/image";
 
 export function Hero() {
   const x = useMotionValue(0);
@@ -220,10 +221,13 @@ export function Hero() {
             >
               {/* Image Container with 3D depth */}
               <div className="relative aspect-[4/5] overflow-hidden shadow-[0_50px_100px_-20px_rgba(15,76,129,0.3)] transition-all duration-700 group-hover:shadow-[0_80px_150px_-30px_rgba(15,76,129,0.4)]">
-                <img
+                <Image
                   src="/assets/dr-tanveer.jpg"
                   alt="Muhammad Tanveer - Expert Physiotherapist"
-                  className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all duration-700 scale-105 group-hover:scale-100"
+                  fill
+                  className="object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all duration-700 scale-105 group-hover:scale-100"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  priority
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-ink/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               </div>

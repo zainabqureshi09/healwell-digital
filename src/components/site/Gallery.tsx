@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Plus, X, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 
 // Static array of gallery images for Next.js
 const allImages = Array.from({ length: 71 }, (_, i) => {
@@ -20,6 +21,8 @@ const allImages = Array.from({ length: 71 }, (_, i) => {
           : "md:col-span-1 md:row-span-1",
   };
 });
+
+const MotionImage = motion(Image);
 
 export function Gallery({ limit }: { limit?: number }) {
   const [selectedImg, setSelectedImg] = useState<string | null>(null);
@@ -80,11 +83,12 @@ export function Gallery({ limit }: { limit?: number }) {
               className={`group relative overflow-hidden bg-muted cursor-pointer transition-all duration-700 hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.2)] ${item.span}`}
               onClick={() => setSelectedImg(item.url)}
             >
-              <img
+              <Image
                 src={item.url}
                 alt={item.title}
-                loading="lazy"
-                className="w-full h-full object-cover grayscale-[0.4] group-hover:grayscale-0 group-hover:scale-110 transition-all duration-1000 ease-out"
+                fill
+                className="object-cover grayscale-[0.4] group-hover:grayscale-0 group-hover:scale-110 transition-all duration-1000 ease-out"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
                 <span className="text-[10px] uppercase tracking-[0.3em] font-black text-white/60 mb-2">
@@ -154,16 +158,22 @@ export function Gallery({ limit }: { limit?: number }) {
             <button className="absolute top-10 right-10 text-white/40 hover:text-white transition-colors bg-white/5 hover:bg-white/10 p-4 rounded-full">
               <X className="w-8 h-8" />
             </button>
-            <motion.img
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              src={selectedImg}
-              alt="Gallery Preview"
-              className="max-w-full max-h-[85vh] object-contain shadow-[0_50px_100px_rgba(0,0,0,0.5)] rounded-lg"
+            <div
+              className="relative w-full h-full max-w-5xl max-h-[85vh] overflow-hidden"
               onClick={(e) => e.stopPropagation()}
-            />
+            >
+              <MotionImage
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                src={selectedImg}
+                alt="Gallery Preview"
+                fill
+                className="object-contain shadow-[0_50px_100px_rgba(0,0,0,0.5)] rounded-lg"
+                sizes="90vw"
+              />
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

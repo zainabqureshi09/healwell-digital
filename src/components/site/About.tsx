@@ -1,4 +1,5 @@
 import { CheckCircle2 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 const points = [
@@ -20,10 +21,12 @@ export function About() {
             <div className="relative group">
               <div className="absolute -inset-6 border border-primary/5 translate-x-6 translate-y-6 group-hover:translate-x-3 group-hover:translate-y-3 transition-transform duration-700" />
               <div className="relative aspect-square overflow-hidden shadow-premium grayscale-[0.3] group-hover:grayscale-0 transition-all duration-700">
-                <img
+                <Image
                   src="/assets/dr-tanveer.jpg"
                   alt="Muhammad Tanveer, Physiotherapist in Karachi"
-                  className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700"
+                  fill
+                  className="object-cover scale-105 group-hover:scale-100 transition-transform duration-700"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
               </div>
               <div className="absolute -bottom-8 -right-8 bg-primary p-8 shadow-premium hidden md:block">
