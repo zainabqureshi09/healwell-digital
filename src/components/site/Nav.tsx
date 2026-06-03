@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Phone, Menu, X, ArrowRight } from "lucide-react";
+import { Phone, Menu, X, ArrowRight, Activity } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -39,21 +39,21 @@ export function Nav() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         <Link href="/" className="group flex items-center gap-4">
-          <motion.div
-            whileHover={{ rotate: 180 }}
-            className="w-12 h-12 bg-primary flex items-center justify-center text-white font-display text-2xl shadow-lg group-hover:bg-secondary transition-colors duration-500"
-          >
-            T
-          </motion.div>
+          <div className="relative">
+            <motion.div
+              whileHover={{ rotate: 180 }}
+              className="w-12 h-12 bg-primary flex items-center justify-center text-white shadow-premium group-hover:bg-secondary transition-all duration-500 rounded-xl"
+            >
+              <Activity className="w-6 h-6" />
+            </motion.div>
+            <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-secondary rounded-full border-2 border-white" />
+          </div>
           <div className="flex flex-col">
-            <span className="font-display font-bold text-xl leading-none text-ink tracking-tight">
-              Muhammad{" "}
-              <span className="text-primary group-hover:text-secondary transition-colors">
-                Tanveer
-              </span>
+            <span className="font-display font-bold text-2xl leading-none text-ink tracking-tight group-hover:text-primary transition-colors">
+              Tanveer<span className="text-primary italic">.</span>
             </span>
-            <span className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground font-black mt-1.5 opacity-60">
-              Expert Physiotherapist
+            <span className="text-[9px] uppercase tracking-[0.4em] text-muted-foreground font-black mt-1.5 opacity-60">
+              Clinical Excellence
             </span>
           </div>
         </Link>

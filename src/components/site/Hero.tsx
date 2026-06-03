@@ -36,15 +36,15 @@ export function Hero() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.2,
+        staggerChildren: 0.1,
+        delayChildren: 0.05,
       },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "circOut" } },
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
   } as const;
 
   return (
@@ -54,46 +54,25 @@ export function Hero() {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
-      {/* Dynamic Background Elements */}
+      {/* Dynamic Background Elements - Optimized with lower opacity and simpler transitions */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <motion.div
-          animate={{
-            y: [0, -20, 0],
-            rotate: [0, 10, 0],
-          }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-20 left-[10%] w-64 h-64 bg-primary/5 rounded-full blur-3xl"
-        />
-        <motion.div
-          animate={{
-            y: [0, 20, 0],
-            rotate: [0, -10, 0],
-          }}
-          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-20 right-[10%] w-96 h-96 bg-secondary/5 rounded-full blur-3xl"
-        />
+        <div className="absolute top-20 left-[10%] w-64 h-64 bg-primary/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 right-[10%] w-96 h-96 bg-secondary/5 rounded-full blur-3xl" />
 
         {/* Floating Icons */}
         <motion.div
-          animate={{ y: [0, -30, 0], x: [0, 15, 0], rotate: [0, 20, 0] }}
-          transition={{ duration: 6, repeat: Infinity }}
+          animate={{ y: [0, -20, 0] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
           className="absolute top-[15%] right-[20%] text-primary/10"
         >
           <Activity size={80} strokeWidth={1} />
         </motion.div>
         <motion.div
-          animate={{ y: [0, 25, 0], x: [0, -10, 0], rotate: [0, -15, 0] }}
-          transition={{ duration: 8, repeat: Infinity }}
+          animate={{ y: [0, 20, 0] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
           className="absolute bottom-[25%] left-[15%] text-secondary/10"
         >
           <Heart size={100} strokeWidth={1} />
-        </motion.div>
-        <motion.div
-          animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1] }}
-          transition={{ duration: 5, repeat: Infinity }}
-          className="absolute top-[40%] left-[5%] text-primary/10"
-        >
-          <ShieldCheck size={60} strokeWidth={1} />
         </motion.div>
       </div>
 
@@ -111,7 +90,7 @@ export function Hero() {
           {/* TEXT SIDE */}
           <motion.div
             variants={containerVariants}
-            initial="hidden"
+            initial="visible"
             animate="visible"
             className="lg:col-span-7 z-10"
           >
@@ -132,7 +111,7 @@ export function Hero() {
                 <motion.div
                   initial={{ scaleX: 0 }}
                   animate={{ scaleX: 1 }}
-                  transition={{ delay: 1, duration: 1 }}
+                  transition={{ delay: 0.5, duration: 0.8 }}
                   className="absolute -bottom-2 left-0 right-0 h-1 bg-secondary/30 origin-left"
                 />
               </span>
@@ -205,12 +184,7 @@ export function Hero() {
           </motion.div>
 
           {/* IMAGE SIDE */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.2, ease: "circOut" }}
-            className="lg:col-span-5 relative perspective-1000"
-          >
+          <div className="lg:col-span-5 relative perspective-1000">
             <motion.div
               style={{
                 rotateX,
@@ -219,7 +193,7 @@ export function Hero() {
               }}
               className="relative group cursor-none"
             >
-              {/* Image Container with 3D depth */}
+              {/* Image Container with 3D depth - Optimized: removed initial scale animation */}
               <div className="relative aspect-[4/5] overflow-hidden shadow-[0_50px_100px_-20px_rgba(15,76,129,0.3)] transition-all duration-700 group-hover:shadow-[0_80px_150px_-30px_rgba(15,76,129,0.4)]">
                 <Image
                   src="/assets/dr-tanveer.jpg"
@@ -228,6 +202,7 @@ export function Hero() {
                   className="object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all duration-700 scale-105 group-hover:scale-100"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   priority
+                  loading="eager"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-ink/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               </div>
@@ -260,7 +235,7 @@ export function Hero() {
               transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
               className="absolute -top-10 -right-10 w-32 h-32 border border-dashed border-primary/10 rounded-full"
             />
-          </motion.div>
+          </div>
         </div>
       </div>
 
