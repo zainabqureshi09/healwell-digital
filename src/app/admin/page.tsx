@@ -85,7 +85,7 @@ export default function AdminPage() {
       <div
         className="fixed inset-0 opacity-[0.02] pointer-events-none"
         style={{
-          backgroundImage: "url('/assets/pattern-medical.svg')",
+          backgroundImage: "var(--pattern-medical)",
           backgroundSize: "100px 100px",
         }}
       />

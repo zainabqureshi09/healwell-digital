@@ -3,30 +3,15 @@
 import { z } from "zod";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { embedText } from "./ai.server";
-import { headers } from "next/headers";
-import { createClient } from "@supabase/supabase-js";
-import type { Database } from "@/integrations/supabase/types";
+import { createClient } from "@/integrations/supabase/server";
 
 async function getAuthenticatedUserId() {
-  const authHeader = (await headers()).get("authorization");
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    throw new Error("Unauthorized: No authorization header provided");
-  }
-
-  const token = authHeader.replace("Bearer ", "");
-  const SUPABASE_URL = process.env.SUPABASE_URL;
-  const SUPABASE_PUBLISHABLE_KEY = process.env.SUPABASE_PUBLISHABLE_KEY;
-
-  const supabase = createClient<Database>(SUPABASE_URL!, SUPABASE_PUBLISHABLE_KEY!, {
-    global: { headers: { Authorization: `Bearer ${token}` } },
-    auth: { persistSession: false },
-  });
-
+  const supabase = await createClient();
   const {
     data: { user },
     error,
-  } = await supabase.auth.getUser(token);
-  if (error || !user) throw new Error("Unauthorized: Invalid token");
+  } = await supabase.auth.getUser();
+  if (error || !user) throw new Error("Unauthorized: Invalid session");
   return user.id;
 }
 
