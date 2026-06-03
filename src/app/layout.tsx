@@ -3,7 +3,7 @@ import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { Nav } from "@/components/site/Nav";
 import { Footer } from "@/components/site/Footer";
-import { StickyContact } from "@/components/site/StickyContact";
+import { ContactConcierge } from "@/components/site/ContactConcierge";
 import { ChatWidget } from "@/components/chat/ChatWidget";
 import { Toaster } from "@/components/ui/sonner";
 import { Providers } from "./providers";
@@ -48,7 +48,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Nav />
           <main className="flex-grow">{children}</main>
           <Footer />
-          <StickyContact />
+          <ContactConcierge />
           <ChatWidget />
           <Toaster richColors position="top-center" />
         </Providers>
