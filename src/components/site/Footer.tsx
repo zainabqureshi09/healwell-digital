@@ -1,5 +1,5 @@
 import { Phone, MessageCircle, MapPin, Mail, Facebook, Instagram } from "lucide-react";
-import { Link } from "@tanstack/react-router";
+import Link from "next/link";
 
 export function Footer() {
   return (
@@ -7,7 +7,7 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8">
           <div className="lg:col-span-4">
-            <Link to="/" hash="top" className="flex items-center gap-3">
+            <Link href="/#top" className="flex items-center gap-3">
               <div className="w-12 h-12 bg-white flex items-center justify-center text-primary font-display text-2xl">
                 T
               </div>
@@ -58,7 +58,7 @@ export function Footer() {
               ].map((s) => (
                 <li key={s}>
                   <Link
-                    to="/services"
+                    href="/services"
                     className="text-white/60 hover:text-white transition-colors duration-200"
                   >
                     {s}
@@ -78,12 +78,11 @@ export function Footer() {
                 { label: "Treatment Process", href: "/process" },
                 { label: "Patient Reviews", href: "/testimonials" },
                 { label: "FAQ", href: "/faq" },
-                { label: "Book Appointment", href: "/", hash: "booking" },
+                { label: "Book Appointment", href: "/#booking" },
               ].map((link) => (
                 <li key={link.label}>
                   <Link
-                    to={link.href}
-                    hash={link.hash}
+                    href={link.href}
                     className="text-white/60 hover:text-white transition-colors duration-200"
                   >
                     {link.label}

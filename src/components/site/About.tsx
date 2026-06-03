@@ -1,6 +1,5 @@
 import { CheckCircle2 } from "lucide-react";
-import { Link } from "@tanstack/react-router";
-import doctor from "@/assets/dr-tanveer.jpg";
+import Link from "next/link";
 
 const points = [
   "Doctor of Physiotherapy (DPT) — registered practitioner",
@@ -22,7 +21,7 @@ export function About() {
               <div className="absolute -inset-6 border border-primary/5 translate-x-6 translate-y-6 group-hover:translate-x-3 group-hover:translate-y-3 transition-transform duration-700" />
               <div className="relative aspect-square overflow-hidden shadow-premium grayscale-[0.3] group-hover:grayscale-0 transition-all duration-700">
                 <img
-                  src={doctor}
+                  src="/assets/dr-tanveer.jpg"
                   alt="Muhammad Tanveer, Physiotherapist in Karachi"
                   className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700"
                 />
@@ -67,14 +66,13 @@ export function About() {
 
             <div className="flex flex-wrap gap-4">
               <Link
-                to="/"
-                hash="booking"
+                href="/#booking"
                 className="inline-flex items-center justify-center bg-primary text-white px-10 py-4 text-sm font-bold tracking-widest uppercase hover:bg-secondary transition-all duration-300"
               >
                 Inquire for Treatment
               </Link>
               <Link
-                to="/services"
+                href="/services"
                 className="inline-flex items-center justify-center border border-primary text-primary px-10 py-4 text-sm font-bold tracking-widest uppercase hover:bg-primary hover:text-white transition-all duration-300"
               >
                 Clinical Services

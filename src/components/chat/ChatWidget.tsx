@@ -1,6 +1,8 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
-import { useServerFn } from "@tanstack/react-start";
-import { MessageCircle, Send, X, CalendarPlus, Loader2, Sparkles } from "lucide-react";
+import { MessageCircle, Send, X, CalendarPlus, Loader2, Sparkles, User, Bot } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { ragChat, captureLead } from "@/lib/chat.functions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -48,8 +50,6 @@ export function ChatWidget() {
   });
   const [leadBusy, setLeadBusy] = useState(false);
 
-  const chat = useServerFn(ragChat);
-  const submitLead = useServerFn(captureLead);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -69,7 +69,9 @@ export function ChatWidget() {
   }, [messages, busy, showLead]);
 
   useEffect(() => {
-    if (open) inputRef.current?.focus();
+    if (open) {
+      setTimeout(() => inputRef.current?.focus(), 100);
+    }
   }, [open, busy]);
 
   async function send(text: string) {
@@ -80,7 +82,7 @@ export function ChatWidget() {
     setMessages((m) => [...m, { role: "user", content }]);
     setBusy(true);
     try {
-      const res = await chat({ data: { message: content, sessionId: getSessionId(), history } });
+      const res = await ragChat({ message: content, sessionId: getSessionId(), history });
       setConversationId(res.conversationId);
       setMessages((m) => [
         ...m,
@@ -108,7 +110,7 @@ export function ChatWidget() {
     if (leadBusy) return;
     setLeadBusy(true);
     try {
-      await submitLead({ data: { ...lead, conversationId } });
+      await captureLead({ ...lead, conversationId });
       toast.success("Appointment request sent. We'll contact you shortly.");
       setShowLead(false);
       setMessages((m) => [
@@ -126,167 +128,222 @@ export function ChatWidget() {
     }
   }
 
-  if (!open) {
-    return (
-      <button
-        onClick={() => setOpen(true)}
-        className="fixed bottom-36 right-6 z-50 flex h-14 w-14 items-center justify-center bg-primary text-white shadow-premium transition-transform hover:scale-110"
-        aria-label="Open chat"
-      >
-        <Sparkles className="h-5 w-5" />
-      </button>
-    );
-  }
-
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex h-[600px] max-h-[85vh] w-[380px] max-w-[calc(100vw-2.5rem)] flex-col overflow-hidden border border-border bg-white shadow-premium animate-fade-up">
-      <div className="flex items-center justify-between bg-primary px-6 py-4 text-white">
-        <div>
-          <div className="text-sm font-display font-bold uppercase tracking-widest">
-            Medical Assistant
-          </div>
-          <div className="text-[10px] opacity-70 font-semibold uppercase tracking-tighter">
-            Elite Physio Concierge
-          </div>
-        </div>
-        <button
-          onClick={() => setOpen(false)}
-          aria-label="Close"
-          className="p-1 hover:bg-white/10 transition-colors"
-        >
-          <X className="h-5 w-5" />
-        </button>
-      </div>
+    <>
+      <AnimatePresence>
+        {!open && (
+          <motion.button
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0, opacity: 0 }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => setOpen(true)}
+            className="fixed bottom-24 right-6 z-50 flex h-16 w-16 items-center justify-center bg-primary text-white shadow-[0_20px_40px_rgba(15,76,129,0.3)] rounded-full transition-shadow"
+            aria-label="Open chat"
+          >
+            <div className="absolute inset-0 rounded-full bg-primary/20 animate-ping" />
+            <Sparkles className="h-6 w-6 relative z-10" />
+            <div className="absolute -top-1 -right-1 w-4 h-4 bg-secondary rounded-full border-2 border-white" />
+          </motion.button>
+        )}
+      </AnimatePresence>
 
-      <div ref={scrollRef} className="flex-1 space-y-4 overflow-y-auto px-6 py-6 text-sm">
-        {messages.map((m, i) => (
-          <div key={i} className={m.role === "user" ? "flex justify-end" : ""}>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ y: 100, opacity: 0, scale: 0.95 }}
+            animate={{ y: 0, opacity: 1, scale: 1 }}
+            exit={{ y: 100, opacity: 0, scale: 0.95 }}
+            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            className="fixed bottom-6 right-6 z-50 flex h-[650px] max-h-[85vh] w-[420px] max-w-[calc(100vw-2.5rem)] flex-col overflow-hidden border border-border bg-white shadow-[0_40px_100px_rgba(0,0,0,0.2)] rounded-3xl"
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between bg-primary px-8 py-6 text-white relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-x-1/2 -translate-y-1/2 blur-2xl" />
+              <div className="relative z-10">
+                <div className="flex items-center gap-3 mb-1">
+                  <div className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
+                  <div className="text-sm font-display font-black uppercase tracking-[0.2em]">
+                    Medical Assistant
+                  </div>
+                </div>
+                <div className="text-[10px] opacity-60 font-black uppercase tracking-widest">
+                  Active Performance Concierge
+                </div>
+              </div>
+              <button
+                onClick={() => setOpen(false)}
+                aria-label="Close"
+                className="relative z-10 p-2 hover:bg-white/10 rounded-full transition-colors"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            {/* Chat Body */}
             <div
-              className={
-                m.role === "user"
-                  ? "max-w-[85%] bg-primary text-white px-4 py-3 text-sm font-medium"
-                  : "max-w-[90%] whitespace-pre-wrap text-ink leading-relaxed"
-              }
+              ref={scrollRef}
+              className="flex-1 space-y-6 overflow-y-auto px-8 py-8 text-sm bg-background/30 scroll-smooth"
             >
-              {m.content}
-              {m.bookIntent && m.role === "assistant" && (
-                <button
-                  className="mt-4 w-full bg-primary text-white px-4 py-3 text-xs font-bold uppercase tracking-widest hover:bg-secondary transition-colors"
-                  onClick={() => setShowLead(true)}
+              {messages.map((m, i) => (
+                <motion.div
+                  initial={{ opacity: 0, y: 10, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  key={i}
+                  className={m.role === "user" ? "flex justify-end" : "flex gap-3"}
                 >
-                  Book Appointment
-                </button>
+                  {m.role === "assistant" && (
+                    <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary flex-shrink-0 mt-1">
+                      <Bot size={16} />
+                    </div>
+                  )}
+                  <div
+                    className={
+                      m.role === "user"
+                        ? "max-w-[85%] bg-primary text-white px-5 py-4 rounded-2xl rounded-tr-none shadow-lg font-medium leading-relaxed"
+                        : "max-w-[85%] whitespace-pre-wrap text-ink leading-relaxed font-medium bg-white border border-border/50 p-5 rounded-2xl rounded-tl-none shadow-sm"
+                    }
+                  >
+                    {m.content}
+                    {m.bookIntent && m.role === "assistant" && (
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        className="mt-5 w-full bg-secondary text-white px-5 py-4 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-secondary/90 transition-colors shadow-lg"
+                        onClick={() => setShowLead(true)}
+                      >
+                        Initiate Secure Booking
+                      </motion.button>
+                    )}
+                  </div>
+                  {m.role === "user" && (
+                    <div className="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary flex-shrink-0 mt-1 ml-3">
+                      <User size={16} />
+                    </div>
+                  )}
+                </motion.div>
+              ))}
+
+              {busy && (
+                <div className="flex gap-3 animate-fade-in">
+                  <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
+                    <Bot size={16} />
+                  </div>
+                  <div className="flex items-center gap-1.5 px-5 py-4 bg-white border border-border/50 rounded-2xl rounded-tl-none">
+                    <div className="w-1.5 h-1.5 bg-primary/40 rounded-full animate-bounce [animation-delay:-0.3s]" />
+                    <div className="w-1.5 h-1.5 bg-primary/40 rounded-full animate-bounce [animation-delay:-0.15s]" />
+                    <div className="w-1.5 h-1.5 bg-primary/40 rounded-full animate-bounce" />
+                  </div>
+                </div>
+              )}
+
+              {!busy && messages.length === 1 && (
+                <div className="flex flex-wrap gap-2 pt-4">
+                  {SUGGESTIONS.map((s) => (
+                    <motion.button
+                      key={s}
+                      whileHover={{ x: 5, backgroundColor: "rgba(15, 76, 129, 0.05)" }}
+                      onClick={() => send(s)}
+                      className="w-full text-left border border-border bg-white px-5 py-4 text-[11px] uppercase font-black text-muted-foreground transition-all hover:border-primary/30 hover:text-primary rounded-xl"
+                    >
+                      {s}
+                    </motion.button>
+                  ))}
+                </div>
+              )}
+
+              {showLead && (
+                <motion.form
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  onSubmit={onSubmitLead}
+                  className="space-y-4 border border-primary/20 bg-white p-8 rounded-2xl shadow-xl relative overflow-hidden"
+                >
+                  <div className="absolute top-0 left-0 w-1 h-full bg-secondary" />
+                  <div className="text-[11px] font-black uppercase tracking-[0.3em] text-primary mb-6 flex items-center gap-2">
+                    <CalendarPlus size={14} /> Secure Intake Form
+                  </div>
+                  <Input
+                    required
+                    placeholder="Patient full name"
+                    value={lead.name}
+                    onChange={(e) => setLead({ ...lead, name: e.target.value })}
+                    className="bg-background/50 border-none focus:ring-2 ring-primary/20 h-12 text-sm"
+                  />
+                  <Input
+                    required
+                    placeholder="Contact Number (WhatsApp preferred)"
+                    value={lead.phone}
+                    onChange={(e) => setLead({ ...lead, phone: e.target.value })}
+                    className="bg-background/50 border-none focus:ring-2 ring-primary/20 h-12 text-sm"
+                  />
+                  <Input
+                    placeholder="Locality (e.g. DHA Phase 6)"
+                    value={lead.location}
+                    onChange={(e) => setLead({ ...lead, location: e.target.value })}
+                    className="bg-background/50 border-none focus:ring-2 ring-primary/20 h-12 text-sm"
+                  />
+                  <Textarea
+                    placeholder="Describe your medical condition..."
+                    value={lead.problem}
+                    onChange={(e) => setLead({ ...lead, problem: e.target.value })}
+                    rows={3}
+                    className="bg-background/50 border-none focus:ring-2 ring-primary/20 text-sm resize-none"
+                  />
+
+                  <div className="flex gap-3 pt-4">
+                    <button
+                      type="submit"
+                      disabled={leadBusy}
+                      className="flex-1 bg-primary text-white py-4 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-secondary transition-colors shadow-lg"
+                    >
+                      {leadBusy ? <Loader2 className="h-4 w-4 animate-spin" /> : "Request Visit"}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setShowLead(false)}
+                      className="px-6 text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground hover:text-ink"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </motion.form>
               )}
             </div>
-          </div>
-        ))}
-        {busy && (
-          <div className="flex items-center gap-2 text-[10px] uppercase font-bold text-muted-foreground">
-            <Loader2 className="h-3 w-3 animate-spin" /> Analyzing...
-          </div>
-        )}
-        {!busy && messages.length === 1 && (
-          <div className="flex flex-wrap gap-2 pt-4">
-            {SUGGESTIONS.map((s) => (
-              <button
-                key={s}
-                onClick={() => send(s)}
-                className="border border-border bg-background px-4 py-2 text-[10px] uppercase font-bold text-muted-foreground transition-all hover:border-primary hover:text-primary"
-              >
-                {s}
-              </button>
-            ))}
-          </div>
-        )}
 
-        {showLead && (
-          <form
-            onSubmit={onSubmitLead}
-            className="space-y-4 border border-primary/10 bg-background p-6"
-          >
-            <div className="text-xs font-bold uppercase tracking-widest text-primary">
-              Secure Booking
+            {/* Input Footer */}
+            <div className="border-t border-border bg-white p-6">
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  send(input);
+                }}
+                className="flex items-center gap-4 bg-background/50 px-6 py-4 rounded-2xl border border-border/50 focus-within:border-primary/30 focus-within:ring-4 ring-primary/5 transition-all"
+              >
+                <input
+                  ref={inputRef}
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  placeholder="Ask a medical question..."
+                  disabled={busy}
+                  className="flex-1 bg-transparent text-sm font-medium focus:outline-none placeholder:text-muted-foreground/50"
+                />
+                <button
+                  type="submit"
+                  disabled={busy || !input.trim()}
+                  className="text-primary hover:text-secondary disabled:opacity-30 transition-colors"
+                >
+                  <Send className="h-5 w-5" />
+                </button>
+              </form>
+              <div className="mt-4 text-center text-[9px] text-muted-foreground/50 uppercase tracking-[0.1em] font-black">
+                AI Assistant · Clinical Guidance only · WhatsApp +92 342 7160092
+              </div>
             </div>
-            <Input
-              required
-              placeholder="Your name"
-              value={lead.name}
-              onChange={(e) => setLead({ ...lead, name: e.target.value })}
-              className="bg-white border-b border-border p-3 text-xs"
-            />
-            <Input
-              required
-              placeholder="Phone (e.g. 03001234567)"
-              value={lead.phone}
-              onChange={(e) => setLead({ ...lead, phone: e.target.value })}
-              className="bg-white border-b border-border p-3 text-xs"
-            />
-            <Input
-              placeholder="Area / Location in Karachi"
-              value={lead.location}
-              onChange={(e) => setLead({ ...lead, location: e.target.value })}
-              className="bg-white border-b border-border p-3 text-xs"
-            />
-            <Textarea
-              placeholder="Briefly describe your condition"
-              value={lead.problem}
-              onChange={(e) => setLead({ ...lead, problem: e.target.value })}
-              rows={2}
-              className="bg-white border-b border-border p-3 text-xs resize-none"
-            />
-            <Input
-              placeholder="Preferred time (e.g. Mon evening)"
-              value={lead.preferredTime}
-              onChange={(e) => setLead({ ...lead, preferredTime: e.target.value })}
-              className="bg-white border-b border-border p-3 text-xs"
-            />
-
-            <div className="flex gap-2 pt-2">
-              <button
-                type="submit"
-                disabled={leadBusy}
-                className="flex-1 bg-primary text-white py-3 text-[10px] font-bold uppercase tracking-widest hover:bg-secondary transition-colors"
-              >
-                {leadBusy ? <Loader2 className="h-3 w-3 animate-spin" /> : "Request Visit"}
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowLead(false)}
-                className="px-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground hover:text-ink"
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
+          </motion.div>
         )}
-      </div>
-
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          send(input);
-        }}
-        className="flex items-center gap-2 border-t border-border bg-white p-4"
-      >
-        <input
-          ref={inputRef}
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Type your question..."
-          disabled={busy}
-          className="flex-1 bg-transparent text-sm focus:outline-none"
-        />
-        <button
-          type="submit"
-          disabled={busy || !input.trim()}
-          className="text-primary hover:text-secondary transition-colors"
-        >
-          <Send className="h-5 w-5" />
-        </button>
-      </form>
-      <div className="border-t border-border bg-background px-6 py-3 text-[10px] text-muted-foreground uppercase tracking-tighter">
-        Educational info only — not a medical diagnosis.
-      </div>
-    </div>
+      </AnimatePresence>
+    </>
   );
 }

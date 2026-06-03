@@ -1,27 +1,20 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+"use client";
+
 import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/login")({
-  component: LoginPage,
-  head: () => ({
-    meta: [
-      { title: "Admin Login | Muhammad Tanveer Physiotherapy" },
-      { name: "robots", content: "noindex" },
-    ],
-  }),
-});
-
-function LoginPage() {
+export default function LoginPage() {
   const [mode, setMode] = useState<"login" | "signup">("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -39,7 +32,7 @@ function LoginPage() {
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        navigate({ to: "/admin" });
+        router.push("/admin");
       }
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Auth failed");
@@ -63,7 +56,7 @@ function LoginPage() {
 
       <div className="relative w-full max-w-lg z-10 animate-fade-up">
         <div className="text-center mb-10">
-          <Link to="/" className="inline-flex items-center gap-3 mb-8">
+          <Link href="/" className="inline-flex items-center gap-3 mb-8">
             <div className="w-12 h-12 bg-primary flex items-center justify-center text-white font-display text-2xl">
               T
             </div>
@@ -139,7 +132,7 @@ function LoginPage() {
               {mode === "login" ? "Request Administrative Access" : "Return to Secure Login"}
             </button>
             <Link
-              to="/"
+              href="/"
               className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground hover:text-ink transition-colors"
             >
               ← Return to Clinical Site

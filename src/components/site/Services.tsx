@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Home,
   Users,
@@ -9,8 +11,9 @@ import {
   Stethoscope,
   Sparkles,
   PersonStanding,
+  ArrowUpRight,
 } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 
 const services = [
   {
@@ -65,93 +68,169 @@ const services = [
   },
 ];
 
+function ServiceCard({ s, index }: { s: (typeof services)[0]; index: number }) {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const mouseXSpring = useSpring(x);
+  const mouseYSpring = useSpring(y);
+
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["7.5deg", "-7.5deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-7.5deg", "7.5deg"]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    const xPct = mouseX / width - 0.5;
+    const yPct = mouseY / height - 0.5;
+    x.set(xPct);
+    y.set(yPct);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 0.8, delay: (index % 3) * 0.1 }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        rotateX,
+        rotateY,
+        transformStyle: "preserve-3d",
+      }}
+      className="group relative p-10 lg:p-14 bg-white border border-border transition-all duration-500 hover:z-10 hover:shadow-[0_40px_80px_-20px_rgba(15,76,129,0.15)] perspective-1000"
+    >
+      <div style={{ transform: "translateZ(50px)" }} className="flex flex-col h-full relative">
+        <div className="mb-10 relative">
+          <div className="w-16 h-16 border border-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all duration-700 rounded-2xl rotate-3 group-hover:rotate-0">
+            <s.icon className="w-7 h-7" strokeWidth={1.5} />
+          </div>
+          <span className="absolute -top-6 -right-2 text-[70px] font-display font-black text-ink/[0.02] pointer-events-none select-none group-hover:text-primary/[0.05] transition-colors">
+            {String(index + 1).padStart(2, "0")}
+          </span>
+        </div>
+
+        <h3 className="text-2xl font-display font-bold text-ink mb-5 group-hover:text-primary transition-colors tracking-tight">
+          {s.title}
+        </h3>
+
+        <p className="text-base text-muted-foreground leading-relaxed mb-10 flex-grow font-medium">
+          {s.desc}
+        </p>
+
+        <div className="flex items-center justify-between mt-auto">
+          <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] font-black text-primary opacity-0 group-hover:opacity-100 transition-all duration-700 translate-x-[-10px] group-hover:translate-x-0">
+            Learn More <ArrowUpRight className="w-3 h-3" />
+          </div>
+          <div className="w-1.5 h-1.5 rounded-full bg-primary/20 group-hover:bg-secondary group-hover:scale-150 transition-all duration-500" />
+        </div>
+      </div>
+
+      {/* Hover Background Accent */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.01] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+    </motion.div>
+  );
+}
+
 export function Services() {
   return (
-    <section id="services" className="py-24 lg:py-32 bg-white selection:bg-primary/10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-20"
-        >
-          <div className="max-w-3xl">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-[1px] bg-primary" />
-              <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-primary">
-                Expertise & Care
+    <section
+      id="services"
+      className="py-24 lg:py-40 bg-white selection:bg-primary/10 relative overflow-hidden"
+    >
+      {/* Background Accents */}
+      <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
+        <div className="absolute top-[10%] right-[-5%] w-[40%] h-[40%] bg-primary/[0.02] rounded-full blur-[120px]" />
+        <div className="absolute bottom-[10%] left-[-5%] w-[40%] h-[40%] bg-secondary/[0.02] rounded-full blur-[120px]" />
+      </div>
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-12 mb-24">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, ease: "circOut" }}
+            className="max-w-3xl"
+          >
+            <div className="flex items-center gap-4 mb-8">
+              <div className="w-16 h-[1px] bg-primary/30" />
+              <span className="text-[11px] uppercase tracking-[0.4em] font-black text-primary/80">
+                Clinical Excellence
               </span>
             </div>
-            <h2 className="text-4xl lg:text-6xl font-display font-bold text-ink leading-tight">
-              Specialized <span className="italic text-primary">Physiotherapy</span> for every stage
-              of recovery.
+            <h2 className="text-5xl lg:text-7xl font-display font-bold text-ink leading-[1.1] tracking-tighter">
+              World-Class <span className="italic text-primary">Physiotherapy</span> <br />
+              Tailored for You.
             </h2>
-          </div>
-          <p className="text-muted-foreground text-lg max-w-sm lg:mb-2">
-            Evidence-based rehabilitation plans tailored to your unique journey towards pain-free
-            movement.
-          </p>
-        </motion.div>
+          </motion.div>
+          <motion.p
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, delay: 0.2, ease: "circOut" }}
+            className="text-muted-foreground text-xl max-w-sm lg:mb-4 leading-relaxed font-medium"
+          >
+            Merging manual expertise with modern clinical technology to accelerate your recovery
+            journey.
+          </motion.p>
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 border border-border">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {services.map((s, index) => (
-            <motion.div
-              key={s.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: (index % 3) * 0.1 }}
-              className={`group relative p-10 lg:p-12 transition-all duration-500 border-border hover:bg-background ${
-                index % 3 !== 2 ? "lg:border-r" : ""
-              } ${index < services.length - 3 ? "lg:border-b" : ""} ${
-                index % 2 !== 1 ? "md:border-r lg:border-r-0" : ""
-              } border-b md:border-b-0 ${index < services.length - 2 ? "md:border-b" : ""}`}
-            >
-              <div className="flex flex-col h-full">
-                <div className="mb-8 relative">
-                  <div className="w-14 h-14 border border-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-500">
-                    <s.icon className="w-6 h-6" strokeWidth={1.5} />
-                  </div>
-                  <span className="absolute -top-4 -right-2 text-[60px] font-display font-bold text-ink/[0.03] pointer-events-none select-none">
-                    0{index + 1}
-                  </span>
-                </div>
-
-                <h3 className="text-xl font-display font-bold text-ink mb-4 group-hover:text-primary transition-colors">
-                  {s.title}
-                </h3>
-
-                <p className="text-sm text-muted-foreground leading-relaxed mb-8 flex-grow">
-                  {s.desc}
-                </p>
-
-                <div className="flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold text-primary opacity-0 group-hover:opacity-100 transition-all duration-500 translate-x-[-10px] group-hover:translate-x-0">
-                  Explore Service <div className="w-8 h-[1px] bg-primary" />
-                </div>
-              </div>
-            </motion.div>
+            <ServiceCard key={s.title} s={s} index={index} />
           ))}
         </div>
 
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 1, delay: 0.5 }}
-          className="mt-20 text-center"
+          transition={{ duration: 1, delay: 0.4 }}
+          className="mt-32 p-12 lg:p-20 bg-ink text-white relative overflow-hidden group"
         >
-          <p className="text-sm text-muted-foreground mb-8">
-            Looking for something specific? Our team is here to help you find the right treatment.
-          </p>
-          <a
-            href="https://wa.me/923427160092"
-            className="inline-flex items-center justify-center gap-2 bg-primary text-white px-10 py-4 text-sm font-bold tracking-widest uppercase hover:bg-secondary transition-all duration-300"
-          >
-            Consult with Muhammad Tanveer
-          </a>
+          {/* Decorative elements */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full translate-x-1/2 -translate-y-1/2 blur-3xl group-hover:bg-primary/20 transition-colors duration-700" />
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-secondary/5 rounded-full -translate-x-1/2 translate-y-1/2 blur-3xl" />
+
+          <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-12 text-center md:text-left">
+            <div className="max-w-2xl">
+              <h3 className="text-3xl lg:text-5xl font-display font-bold mb-6 leading-tight">
+                Not sure which treatment <br /> is right for you?
+              </h3>
+              <p className="text-white/60 text-lg font-medium">
+                Our medical team provides free initial guidance via WhatsApp to help you start your
+                recovery correctly.
+              </p>
+            </div>
+            <a
+              href="https://wa.me/923427160092"
+              className="group relative inline-flex items-center justify-center gap-4 bg-white text-ink px-12 py-6 text-sm font-black tracking-[0.2em] uppercase overflow-hidden transition-all duration-500 hover:text-white"
+            >
+              <div className="absolute inset-0 bg-primary translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+              <span className="relative z-10 flex items-center gap-3">
+                Consult with Specialist <ArrowUpRight className="w-4 h-4" />
+              </span>
+            </a>
+          </div>
         </motion.div>
       </div>
+
+      <style jsx global>{`
+        .perspective-1000 {
+          perspective: 1000px;
+        }
+      `}</style>
     </section>
   );
 }

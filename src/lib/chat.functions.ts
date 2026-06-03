@@ -1,4 +1,5 @@
-import { createServerFn } from "@tanstack/react-start";
+"use server";
+
 import { z } from "zod";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { chatComplete, embedText, type ChatMsg } from "./ai.server";
@@ -27,117 +28,113 @@ LEAD CAPTURE: If the patient describes a problem ("I have back pain", "need home
 
 STYLE: Short paragraphs, bullet lists when useful, no markdown headers. Mention WhatsApp +92 342 7160092 when escalating.`;
 
-export const ragChat = createServerFn({ method: "POST" })
-  .inputValidator((input: unknown) =>
-    z
-      .object({
-        message: z.string().trim().min(1).max(2000),
-        sessionId: z.string().min(8).max(64),
-        history: z
-          .array(
-            z.object({
-              role: z.enum(["user", "assistant"]),
-              content: z.string().max(4000),
-            }),
-          )
-          .max(20)
-          .default([]),
-      })
-      .parse(input),
-  )
-  .handler(async ({ data }) => {
-    // 1. Ensure conversation exists
-    let { data: convo } = await supabaseAdmin
+const ragChatSchema = z.object({
+  message: z.string().trim().min(1).max(2000),
+  sessionId: z.string().min(8).max(64),
+  history: z
+    .array(
+      z.object({
+        role: z.enum(["user", "assistant"]),
+        content: z.string().max(4000),
+      }),
+    )
+    .max(20)
+    .default([]),
+});
+
+export async function ragChat(input: z.infer<typeof ragChatSchema>) {
+  const data = ragChatSchema.parse(input);
+
+  // 1. Ensure conversation exists
+  let { data: convo } = await supabaseAdmin
+    .from("conversations")
+    .select("id")
+    .eq("session_id", data.sessionId)
+    .maybeSingle();
+  if (!convo) {
+    const ins = await supabaseAdmin
       .from("conversations")
-      .select("id")
-      .eq("session_id", data.sessionId)
-      .maybeSingle();
-    if (!convo) {
-      const ins = await supabaseAdmin
-        .from("conversations")
-        .insert({ session_id: data.sessionId })
-        .select("id")
-        .single();
-      if (ins.error) throw new Error(ins.error.message);
-      convo = ins.data;
-    }
-    const conversationId = convo!.id;
-
-    // 2. Retrieve relevant chunks
-    let context = "";
-    try {
-      const embedding = await embedText(data.message);
-      const { data: chunks } = await supabaseAdmin.rpc("match_kb_chunks", {
-        query_embedding: `[${embedding.join(",")}]`,
-        match_count: 5,
-      });
-      if (chunks && chunks.length) {
-        context = chunks
-          .map(
-            (c: { content: string; similarity: number }, i: number) =>
-              `[${i + 1}] (relevance ${c.similarity.toFixed(2)})\n${c.content}`,
-          )
-          .join("\n\n");
-      }
-    } catch (e) {
-      console.error("RAG retrieval failed", e);
-    }
-
-    // 3. Compose messages
-    const messages: ChatMsg[] = [
-      { role: "system", content: SYSTEM_PROMPT },
-      {
-        role: "system",
-        content: `CLINIC FACTS:\n${CLINIC_FACTS}\n\nCLINIC KNOWLEDGE BASE:\n${context || "(no matching entries — rely on clinic facts and ask the patient to contact us on WhatsApp for specifics)"}`,
-      },
-      ...data.history.map((m) => ({ role: m.role, content: m.content }) as ChatMsg),
-      { role: "user", content: data.message },
-    ];
-
-    const raw = await chatComplete(messages);
-    const bookIntent = raw.includes("[[BOOK_INTENT]]");
-    const reply = raw.replace(/\[\[BOOK_INTENT\]\]/g, "").trim();
-
-    // 4. Persist
-    await supabaseAdmin.from("messages").insert([
-      { conversation_id: conversationId, role: "user", content: data.message },
-      { conversation_id: conversationId, role: "assistant", content: reply },
-    ]);
-
-    return { reply, bookIntent, conversationId };
-  });
-
-export const captureLead = createServerFn({ method: "POST" })
-  .inputValidator((input: unknown) =>
-    z
-      .object({
-        name: z.string().trim().min(2).max(100),
-        phone: z
-          .string()
-          .trim()
-          .min(7)
-          .max(20)
-          .regex(/^[+0-9\s-]+$/, "Invalid phone"),
-        location: z.string().trim().max(200).optional().default(""),
-        problem: z.string().trim().max(1000).optional().default(""),
-        preferredTime: z.string().trim().max(100).optional().default(""),
-        conversationId: z.string().uuid().optional(),
-      })
-      .parse(input),
-  )
-  .handler(async ({ data }) => {
-    const { error, data: lead } = await supabaseAdmin
-      .from("leads")
-      .insert({
-        name: data.name,
-        phone: data.phone,
-        location: data.location || null,
-        problem: data.problem || null,
-        preferred_time: data.preferredTime || null,
-        conversation_id: data.conversationId ?? null,
-      })
+      .insert({ session_id: data.sessionId })
       .select("id")
       .single();
-    if (error) throw new Error(error.message);
-    return { id: lead.id };
-  });
+    if (ins.error) throw new Error(ins.error.message);
+    convo = ins.data;
+  }
+  const conversationId = convo!.id;
+
+  // 2. Retrieve relevant chunks
+  let context = "";
+  try {
+    const embedding = await embedText(data.message);
+    const { data: chunks } = await supabaseAdmin.rpc("match_kb_chunks", {
+      query_embedding: `[${embedding.join(",")}]`,
+      match_count: 5,
+    });
+    if (chunks && chunks.length) {
+      context = chunks
+        .map(
+          (c: { content: string; similarity: number }, i: number) =>
+            `[${i + 1}] (relevance ${c.similarity.toFixed(2)})\n${c.content}`,
+        )
+        .join("\n\n");
+    }
+  } catch (e) {
+    console.error("RAG retrieval failed", e);
+  }
+
+  // 3. Compose messages
+  const messages: ChatMsg[] = [
+    { role: "system", content: SYSTEM_PROMPT },
+    {
+      role: "system",
+      content: `CLINIC FACTS:\n${CLINIC_FACTS}\n\nCLINIC KNOWLEDGE BASE:\n${context || "(no matching entries — rely on clinic facts and ask the patient to contact us on WhatsApp for specifics)"}`,
+    },
+    ...data.history.map((m) => ({ role: m.role, content: m.content }) as ChatMsg),
+    { role: "user", content: data.message },
+  ];
+
+  const raw = await chatComplete(messages);
+  const bookIntent = raw.includes("[[BOOK_INTENT]]");
+  const reply = raw.replace(/\[\[BOOK_INTENT\]\]/g, "").trim();
+
+  // 4. Persist
+  await supabaseAdmin.from("messages").insert([
+    { conversation_id: conversationId, role: "user", content: data.message },
+    { conversation_id: conversationId, role: "assistant", content: reply },
+  ]);
+
+  return { reply, bookIntent, conversationId };
+}
+
+const captureLeadSchema = z.object({
+  name: z.string().trim().min(2).max(100),
+  phone: z
+    .string()
+    .trim()
+    .min(7)
+    .max(20)
+    .regex(/^[+0-9\s-]+$/, "Invalid phone"),
+  location: z.string().trim().max(200).optional().default(""),
+  problem: z.string().trim().max(1000).optional().default(""),
+  preferredTime: z.string().trim().max(100).optional().default(""),
+  conversationId: z.string().uuid().optional(),
+});
+
+export async function captureLead(input: z.infer<typeof captureLeadSchema>) {
+  const data = captureLeadSchema.parse(input);
+
+  const { error, data: lead } = await supabaseAdmin
+    .from("leads")
+    .insert({
+      name: data.name,
+      phone: data.phone,
+      location: data.location || null,
+      problem: data.problem || null,
+      preferred_time: data.preferredTime || null,
+      conversation_id: data.conversationId ?? null,
+    })
+    .select("id")
+    .single();
+  if (error) throw new Error(error.message);
+  return { id: lead.id };
+}

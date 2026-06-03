@@ -1,6 +1,5 @@
 import { Check } from "lucide-react";
-import { Link } from "@tanstack/react-router";
-import img from "@/assets/home-physio.jpg";
+import Link from "next/link";
 
 const benefits = [
   "No travel — recover in familiar surroundings",
@@ -44,8 +43,7 @@ export function HomePhysio() {
             </ul>
 
             <Link
-              to="/"
-              hash="booking"
+              href="/#booking"
               className="inline-flex items-center justify-center bg-white text-primary px-10 py-4 text-sm font-bold tracking-widest uppercase hover:bg-secondary hover:text-white transition-all duration-300 shadow-premium"
             >
               Book Home Assessment
@@ -57,7 +55,7 @@ export function HomePhysio() {
               <div className="absolute -inset-6 border border-white/10 translate-x-6 translate-y-6 group-hover:translate-x-3 group-hover:translate-y-3 transition-transform duration-700" />
               <div className="relative aspect-[4/5] overflow-hidden shadow-2xl grayscale-[0.2] group-hover:grayscale-0 transition-all duration-700">
                 <img
-                  src={img}
+                  src="/assets/home-physio.jpg"
                   alt="Home physiotherapy in Karachi"
                   className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700"
                 />

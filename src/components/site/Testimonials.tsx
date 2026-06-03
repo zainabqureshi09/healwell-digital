@@ -1,5 +1,5 @@
 import { Star, Quote } from "lucide-react";
-import { Link } from "@tanstack/react-router";
+import Link from "next/link";
 
 const reviews = [
   {
@@ -111,8 +111,7 @@ export function Testimonials() {
             </span>
             <div className="w-20 h-[1px] bg-border" />
             <Link
-              to="/"
-              hash="booking"
+              href="/#booking"
               className="text-sm font-bold text-primary uppercase tracking-widest hover:text-secondary transition-colors underline underline-offset-8"
             >
               Write a Review

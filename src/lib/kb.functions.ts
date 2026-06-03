@@ -1,8 +1,34 @@
-import { createServerFn } from "@tanstack/react-start";
+"use server";
+
 import { z } from "zod";
-import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { embedText } from "./ai.server";
+import { headers } from "next/headers";
+import { createClient } from "@supabase/supabase-js";
+import type { Database } from "@/integrations/supabase/types";
+
+async function getAuthenticatedUserId() {
+  const authHeader = (await headers()).get("authorization");
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    throw new Error("Unauthorized: No authorization header provided");
+  }
+
+  const token = authHeader.replace("Bearer ", "");
+  const SUPABASE_URL = process.env.SUPABASE_URL;
+  const SUPABASE_PUBLISHABLE_KEY = process.env.SUPABASE_PUBLISHABLE_KEY;
+
+  const supabase = createClient<Database>(SUPABASE_URL!, SUPABASE_PUBLISHABLE_KEY!, {
+    global: { headers: { Authorization: `Bearer ${token}` } },
+    auth: { persistSession: false },
+  });
+
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser(token);
+  if (error || !user) throw new Error("Unauthorized: Invalid token");
+  return user.id;
+}
 
 async function assertAdmin(userId: string) {
   const { data, error } = await supabaseAdmin
@@ -27,71 +53,68 @@ function chunkText(text: string, size = 900, overlap = 150): string[] {
   return out;
 }
 
-export const ingestDocument = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
-  .inputValidator((input: unknown) =>
-    z
-      .object({
-        title: z.string().trim().min(2).max(200),
-        content: z.string().trim().min(20).max(200000),
-        sourceType: z.string().max(50).default("text"),
-      })
-      .parse(input),
-  )
-  .handler(async ({ data, context }) => {
-    await assertAdmin(context.userId);
+const ingestDocumentSchema = z.object({
+  title: z.string().trim().min(2).max(200),
+  content: z.string().trim().min(20).max(200000),
+  sourceType: z.string().max(50).default("text"),
+});
 
-    const { data: doc, error } = await supabaseAdmin
-      .from("kb_documents")
-      .insert({
-        title: data.title,
-        content: data.content,
-        source_type: data.sourceType,
-        created_by: context.userId,
-      })
-      .select("id")
-      .single();
-    if (error) throw new Error(error.message);
+export async function ingestDocument(input: z.infer<typeof ingestDocumentSchema>) {
+  const data = ingestDocumentSchema.parse(input);
+  const userId = await getAuthenticatedUserId();
+  await assertAdmin(userId);
 
-    const chunks = chunkText(data.content);
-    const rows: Array<{
-      document_id: string;
-      content: string;
-      embedding: string;
-      chunk_index: number;
-    }> = [];
-    for (let i = 0; i < chunks.length; i++) {
-      const emb = await embedText(chunks[i]);
-      rows.push({
-        document_id: doc.id,
-        content: chunks[i],
-        embedding: `[${emb.join(",")}]`,
-        chunk_index: i,
-      });
-    }
-    const ins = await supabaseAdmin.from("kb_chunks").insert(rows);
-    if (ins.error) throw new Error(ins.error.message);
-    return { id: doc.id, chunks: chunks.length };
-  });
+  const { data: doc, error } = await supabaseAdmin
+    .from("kb_documents")
+    .insert({
+      title: data.title,
+      content: data.content,
+      source_type: data.sourceType,
+      created_by: userId,
+    })
+    .select("id")
+    .single();
+  if (error) throw new Error(error.message);
 
-export const listDocuments = createServerFn({ method: "GET" })
-  .middleware([requireSupabaseAuth])
-  .handler(async ({ context }) => {
-    await assertAdmin(context.userId);
-    const { data, error } = await supabaseAdmin
-      .from("kb_documents")
-      .select("id, title, source_type, created_at")
-      .order("created_at", { ascending: false });
-    if (error) throw new Error(error.message);
-    return data;
-  });
+  const chunks = chunkText(data.content);
+  const rows: Array<{
+    document_id: string;
+    content: string;
+    embedding: string;
+    chunk_index: number;
+  }> = [];
+  for (let i = 0; i < chunks.length; i++) {
+    const emb = await embedText(chunks[i]);
+    rows.push({
+      document_id: doc.id,
+      content: chunks[i],
+      embedding: `[${emb.join(",")}]`,
+      chunk_index: i,
+    });
+  }
+  const ins = await supabaseAdmin.from("kb_chunks").insert(rows);
+  if (ins.error) throw new Error(ins.error.message);
+  return { id: doc.id, chunks: chunks.length };
+}
 
-export const deleteDocument = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
-  .inputValidator((input: unknown) => z.object({ id: z.string().uuid() }).parse(input))
-  .handler(async ({ data, context }) => {
-    await assertAdmin(context.userId);
-    const { error } = await supabaseAdmin.from("kb_documents").delete().eq("id", data.id);
-    if (error) throw new Error(error.message);
-    return { ok: true };
-  });
+export async function listDocuments() {
+  const userId = await getAuthenticatedUserId();
+  await assertAdmin(userId);
+  const { data, error } = await supabaseAdmin
+    .from("kb_documents")
+    .select("id, title, source_type, created_at")
+    .order("created_at", { ascending: false });
+  if (error) throw new Error(error.message);
+  return data;
+}
+
+const deleteDocumentSchema = z.object({ id: z.string().uuid() });
+
+export async function deleteDocument(input: z.infer<typeof deleteDocumentSchema>) {
+  const data = deleteDocumentSchema.parse(input);
+  const userId = await getAuthenticatedUserId();
+  await assertAdmin(userId);
+  const { error } = await supabaseAdmin.from("kb_documents").delete().eq("id", data.id);
+  if (error) throw new Error(error.message);
+  return { ok: true };
+}

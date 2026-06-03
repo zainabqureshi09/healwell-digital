@@ -14,8 +14,10 @@ dist-ssr
 .vinxi
 .tanstack/**
 .nitro
+.next
 *.local
 .env
+*.tsbuildinfo
 
 # Wrangler / Cloudflare
 .wrangler/

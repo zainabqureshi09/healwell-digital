@@ -1,61 +1,31 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
 import { Hero } from "@/components/site/Hero";
 import { Gallery } from "@/components/site/Gallery";
 import { Booking } from "@/components/site/Booking";
 import { MapSection } from "@/components/site/MapSection";
+import Link from "next/link";
+import type { Metadata } from "next";
 
 const title = "Best Physiotherapist in Karachi | Muhammad Tanveer — Home Physiotherapy";
 const description =
   "Muhammad Tanveer — trusted physiotherapist in Karachi. Home physiotherapy, back pain, sports injury, dry needling & post-surgery rehab. Book today: 0342 7160092.";
 
-export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      {
-        name: "keywords",
-        content:
-          "physiotherapist in Karachi, home physiotherapy Karachi, dry needling Karachi, back pain treatment Karachi, sports injury physiotherapist Karachi, physiotherapy at home Karachi",
-      },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "/" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-    links: [{ rel: "canonical", href: "/" }],
-    scripts: [
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "MedicalBusiness",
-          name: "Muhammad Tanveer Physiotherapist",
-          image: "/",
-          telephone: "+92-342-7160092",
-          priceRange: "$$",
-          address: {
-            "@type": "PostalAddress",
-            streetAddress: "DHA Phase 5",
-            addressLocality: "Karachi",
-            addressCountry: "PK",
-          },
-          medicalSpecialty: "Physiotherapy",
-          areaServed: "Karachi",
-          aggregateRating: {
-            "@type": "AggregateRating",
-            ratingValue: "4.9",
-            reviewCount: "500",
-          },
-        }),
-      },
-    ],
-  }),
-  component: Index,
-});
+export const metadata: Metadata = {
+  title,
+  description,
+  keywords:
+    "physiotherapist in Karachi, home physiotherapy Karachi, dry needling Karachi, back pain treatment Karachi, sports injury physiotherapist Karachi, physiotherapy at home Karachi",
+  openGraph: {
+    title,
+    description,
+    type: "website",
+    url: "/",
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
+};
 
-function Index() {
+export default function IndexPage() {
   return (
     <>
       <Hero />
@@ -70,13 +40,13 @@ function Index() {
             </div>
             <div className="flex gap-4">
               <Link
-                to="/services"
+                href="/services"
                 className="text-[10px] uppercase tracking-[0.2em] font-bold text-primary hover:text-secondary transition-colors underline underline-offset-8"
               >
                 Explore Services
               </Link>
               <Link
-                to="/about"
+                href="/about"
                 className="text-[10px] uppercase tracking-[0.2em] font-bold text-primary hover:text-secondary transition-colors underline underline-offset-8"
               >
                 The Practitioner
@@ -88,6 +58,34 @@ function Index() {
       <Gallery limit={8} />
       <Booking />
       <MapSection />
+
+      {/* Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "MedicalBusiness",
+            name: "Muhammad Tanveer Physiotherapist",
+            image: "/",
+            telephone: "+92-342-7160092",
+            priceRange: "$$",
+            address: {
+              "@type": "PostalAddress",
+              streetAddress: "DHA Phase 5",
+              addressLocality: "Karachi",
+              addressCountry: "PK",
+            },
+            medicalSpecialty: "Physiotherapy",
+            areaServed: "Karachi",
+            aggregateRating: {
+              "@type": "AggregateRating",
+              ratingValue: "4.9",
+              reviewCount: "500",
+            },
+          }),
+        }}
+      />
     </>
   );
 }

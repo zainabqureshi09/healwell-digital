@@ -1,6 +1,7 @@
+"use client";
+
 import { useEffect, useState, useCallback } from "react";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useServerFn } from "@tanstack/react-start";
+import { useRouter } from "next/navigation";
 import { supabase } from "@/integrations/supabase/client";
 import {
   isCurrentUserAdmin,
@@ -19,40 +20,33 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { Loader2, Trash2, LogOut } from "lucide-react";
 
-export const Route = createFileRoute("/admin")({
-  component: AdminPage,
-  head: () => ({
-    meta: [
-      { title: "Admin Dashboard | Muhammad Tanveer Physiotherapy" },
-      { name: "robots", content: "noindex" },
-    ],
-  }),
-});
-
-function AdminPage() {
-  const navigate = useNavigate();
+export default function AdminPage() {
+  const router = useRouter();
   const [ready, setReady] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-  const checkAdmin = useServerFn(isCurrentUserAdmin);
-  const claim = useServerFn(claimAdminIfFirst);
 
   useEffect(() => {
     (async () => {
       const { data } = await supabase.auth.getUser();
       if (!data.user) {
-        navigate({ to: "/login" });
+        router.push("/login");
         return;
       }
-      let res = await checkAdmin();
-      if (!res.isAdmin) {
-        // Try to bootstrap if no admin exists
-        const c = await claim();
-        if (c.claimed) res = { isAdmin: true };
+
+      try {
+        let res = await isCurrentUserAdmin();
+        if (!res.isAdmin) {
+          // Try to bootstrap if no admin exists
+          const c = await claimAdminIfFirst();
+          if (c.claimed) res = { isAdmin: true };
+        }
+        setIsAdmin(res.isAdmin);
+      } catch (e) {
+        console.error("Admin check failed", e);
       }
-      setIsAdmin(res.isAdmin);
       setReady(true);
     })();
-  }, [checkAdmin, claim, navigate]);
+  }, [router]);
 
   if (!ready) {
     return (
@@ -75,7 +69,7 @@ function AdminPage() {
             className="w-full bg-primary text-white py-4 px-8 text-sm font-bold tracking-widest uppercase hover:bg-secondary transition-all duration-300"
             onClick={async () => {
               await supabase.auth.signOut();
-              navigate({ to: "/login" });
+              router.push("/login");
             }}
           >
             Switch Account
@@ -90,7 +84,10 @@ function AdminPage() {
       {/* Background Medical Pattern */}
       <div
         className="fixed inset-0 opacity-[0.02] pointer-events-none"
-        style={{ backgroundImage: "var(--pattern-medical)", backgroundSize: "100px 100px" }}
+        style={{
+          backgroundImage: "url('/assets/pattern-medical.svg')",
+          backgroundSize: "100px 100px",
+        }}
       />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
@@ -114,7 +111,7 @@ function AdminPage() {
               className="inline-flex items-center justify-center border border-primary text-primary px-8 py-3 text-[10px] font-bold tracking-widest uppercase hover:bg-primary hover:text-white transition-all duration-300"
               onClick={async () => {
                 await supabase.auth.signOut();
-                navigate({ to: "/" });
+                router.push("/");
               }}
             >
               <LogOut className="mr-2 h-3.5 w-3.5" /> End Session
@@ -166,18 +163,15 @@ function KBPanel() {
   const [docs, setDocs] = useState<
     Array<{ id: string; title: string; source_type: string; created_at: string }>
   >([]);
-  const list = useServerFn(listDocuments);
-  const ingest = useServerFn(ingestDocument);
-  const del = useServerFn(deleteDocument);
 
   const refresh = useCallback(async () => {
     try {
-      const d = await list();
+      const d = await listDocuments();
       setDocs(d as typeof docs);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Failed to load");
     }
-  }, [list]);
+  }, []);
 
   useEffect(() => {
     refresh();
@@ -187,7 +181,7 @@ function KBPanel() {
     e.preventDefault();
     setBusy(true);
     try {
-      const res = await ingest({ data: { title, content, sourceType: "text" } });
+      const res = await ingestDocument({ title, content, sourceType: "text" });
       toast.success(`Indexed ${res.chunks} chunks.`);
       setTitle("");
       setContent("");
@@ -270,7 +264,7 @@ function KBPanel() {
                   onClick={async () => {
                     if (!confirm("Confirm removal of this document from medical repository?"))
                       return;
-                    await del({ data: { id: d.id } });
+                    await deleteDocument({ id: d.id });
                     refresh();
                   }}
                 >
@@ -303,17 +297,15 @@ function LeadsPanel() {
       created_at: string;
     }>
   >([]);
-  const list = useServerFn(listLeads);
-  const upd = useServerFn(updateLeadStatus);
 
   const refresh = useCallback(async () => {
     try {
-      const d = await list();
+      const d = await listLeads();
       setLeads(d as typeof leads);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Failed to load");
     }
-  }, [list]);
+  }, []);
 
   useEffect(() => {
     refresh();
@@ -338,21 +330,6 @@ function LeadsPanel() {
         <h2 className="text-3xl font-display font-bold text-ink">
           Patient Inquiries <span className="text-primary/20 ml-2">({leads.length})</span>
         </h2>
-        <div className="flex items-center gap-4">
-          <span className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground">
-            Status Filter:
-          </span>
-          <div className="flex gap-2">
-            {["all", "new", "booked"].map((f) => (
-              <span
-                key={f}
-                className="text-[9px] uppercase tracking-tighter font-bold text-primary px-2 py-1 border border-primary/10 cursor-pointer hover:bg-primary hover:text-white transition-colors"
-              >
-                {f}
-              </span>
-            ))}
-          </div>
-        </div>
       </div>
 
       <div className="grid gap-6">
@@ -411,7 +388,7 @@ function LeadsPanel() {
                       : "bg-white text-muted-foreground border-border hover:border-primary hover:text-primary"
                   }`}
                   onClick={async () => {
-                    await upd({ data: { id: l.id, status: s } });
+                    await updateLeadStatus({ id: l.id, status: s });
                     refresh();
                   }}
                 >
@@ -448,13 +425,12 @@ function AnalyticsPanel() {
     leadStatus: Record<string, number>;
     recentQuestions: string[];
   } | null>(null);
-  const get = useServerFn(getAnalytics);
 
   useEffect(() => {
-    get()
+    getAnalytics()
       .then((d) => setStats(d as typeof stats))
       .catch((e) => toast.error(e.message));
-  }, [get]);
+  }, []);
 
   if (!stats)
     return (

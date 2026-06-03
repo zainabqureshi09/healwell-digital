@@ -1,19 +1,19 @@
 # 🏥 HealWell Digital
 
-A modern healthcare platform built to provide a seamless digital experience for patients and healthcare professionals. HealWell Digital combines a clean user interface, responsive design, and modern web technologies to create a professional healthcare presence online.
+A modern healthcare platform built with Next.js to provide a seamless digital experience for patients and healthcare professionals. HealWell Digital combines a clean user interface, responsive design, and modern web technologies to create a professional healthcare presence online.
 
 ## ✨ Features
 
-* Modern and responsive healthcare website
-* Fast performance with TanStack Start
-* Type-safe development with TypeScript
-* Interactive and animated UI with Framer Motion
-* Form validation using React Hook Form + Zod
-* Supabase integration
-* Mobile-first responsive design
-* Accessible UI powered by Radix UI
-* SEO-friendly architecture
-* Optimized user experience
+- Modern and responsive healthcare website
+- Fast performance with Next.js 15 (App Router)
+- Type-safe development with TypeScript
+- Interactive and animated UI with Framer Motion
+- Form validation using React Hook Form + Zod
+- Supabase integration with Server Actions
+- Mobile-first responsive design
+- Accessible UI powered by Radix UI
+- SEO-friendly architecture with Metadata API
+- Optimized user experience
 
 ---
 
@@ -21,33 +21,32 @@ A modern healthcare platform built to provide a seamless digital experience for 
 
 ### Frontend
 
-* React 19
-* TypeScript
-* TanStack Start
-* TanStack Router
-* TanStack Query
-* Vite
+- React 19
+- TypeScript
+- Next.js 15 (App Router)
+- TanStack Query
+- Tailwind CSS v4
 
 ### Styling & UI
 
-* Tailwind CSS v4
-* Radix UI
-* Framer Motion
-* Lucide Icons
-* CVA (Class Variance Authority)
+- Tailwind CSS v4
+- Radix UI
+- Framer Motion
+- Lucide Icons
+- CVA (Class Variance Authority)
 
 ### Backend & Database
 
-* Supabase
+- Supabase (Server Actions)
 
 ### Validation & Forms
 
-* React Hook Form
-* Zod
+- React Hook Form
+- Zod
 
 ### Charts & Data Visualization
 
-* Recharts
+- Recharts
 
 ---
 
@@ -83,27 +82,18 @@ Build for production:
 npm run build
 ```
 
-Preview production build:
-
-```bash
-npm run preview
-```
-
 ---
 
 ## 📁 Project Structure
 
 ```text
+app/          # Next.js App Router (Pages & Layouts)
 src/
-├── components/
-├── routes/
-├── hooks/
-├── lib/
-├── utils/
-├── styles/
-└── assets/
-
-public/
+├── components/ # React Components (UI & Site)
+├── hooks/      # Custom Hooks
+├── lib/        # Shared logic & Server Actions
+└── integrations/ # Supabase & External Services
+public/assets/  # Static Assets (Images)
 ```
 
 ---
@@ -112,30 +102,26 @@ public/
 
 HealWell Digital aims to:
 
-* Improve healthcare accessibility online
-* Provide a professional digital presence for healthcare providers
-* Deliver a smooth user experience across all devices
-* Simplify patient engagement and communication
+- Improve healthcare accessibility online
+- Provide a professional digital presence for healthcare providers
+- Deliver a smooth user experience across all devices
+- Simplify patient engagement and communication
 
 ---
 
 ## 🔒 Security & Performance
 
-* Type-safe architecture
-* Form validation and error handling
-* Optimized routing
-* Fast page rendering
-* Scalable codebase structure
+- Type-safe architecture
+- Form validation and error handling
+- Optimized routing
+- Fast page rendering
+- Scalable codebase structure
 
 ---
 
 ## 🌐 Deployment
 
-The project can be deployed on:
-
-* Vercel
-* Netlify
-* Cloudflare Pages
+The project is optimized for deployment on **Vercel**.
 
 ---
 
@@ -144,9 +130,6 @@ The project can be deployed on:
 **Zainab Ayaz**
 
 Web Developer • AI Enthusiast • SaaS Builder
-
-GitHub:
-https://github.com/zainabqureshi09
 
 ---
 
