@@ -374,7 +374,7 @@ function LeadsPanel() {
 
             {l.problem && (
               <div className="bg-white p-6 border border-border mb-8 text-sm text-ink leading-relaxed italic">
-                "{l.problem}"
+                &quot;{l.problem}&quot;
               </div>
             )}
 
@@ -499,7 +499,7 @@ function AnalyticsPanel() {
                   key={i}
                   className="bg-background p-6 border-l-4 border-primary/20 text-ink text-sm leading-relaxed font-medium"
                 >
-                  "{q}"
+                  &quot;{q}&quot;
                 </div>
               ))}
               {!stats.recentQuestions.length && (

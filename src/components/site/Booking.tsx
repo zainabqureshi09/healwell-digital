@@ -99,7 +99,7 @@ export function Booking() {
                   Request an Appointment
                 </h3>
                 <p className="text-sm text-muted-foreground">
-                  Fill in the details below and we'll handle the rest.
+                  Fill in the details below and we&apos;ll handle the rest.
                 </p>
               </div>
 

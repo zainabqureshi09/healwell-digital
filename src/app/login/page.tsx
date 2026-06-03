@@ -74,7 +74,7 @@ export default function LoginPage() {
             {mode === "login" ? "Medical Portal" : "Admin Registration"}
           </h1>
           <p className="text-muted-foreground text-sm font-medium max-w-xs mx-auto">
-            Authorized access for Muhammad Tanveer's healthcare administration and patient
+            Authorized access for Muhammad Tanveer&apos;s healthcare administration and patient
             management.
           </p>
         </div>

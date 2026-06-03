@@ -85,7 +85,7 @@ export function Testimonials() {
                 </div>
 
                 <blockquote className="text-lg text-ink font-medium leading-relaxed mb-10">
-                  "{r.text}"
+                  &quot;{r.text}&quot;
                 </blockquote>
 
                 <div className="flex items-center gap-4 pt-8 border-t border-border">

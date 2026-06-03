@@ -126,8 +126,8 @@ export function WhyUs() {
               </h2>
               <p className="text-xl text-muted-foreground leading-relaxed mb-12 font-medium">
                 Dr. Muhammad Tanveer combines a decade of clinical mastery with a patient-centric
-                philosophy. We don't just treat symptoms; we restore the bio-mechanical integrity of
-                your body.
+                philosophy. We don&apos;t just treat symptoms; we restore the bio-mechanical
+                integrity of your body.
               </p>
             </motion.div>
 
