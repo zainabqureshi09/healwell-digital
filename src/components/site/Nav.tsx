@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Phone, Menu, X, ArrowRight, Activity } from "lucide-react";
+import { Phone, Menu, X, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -20,7 +20,6 @@ export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
-  const isHome = pathname === "/";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -41,18 +40,30 @@ export function Nav() {
         <Link href="/" className="group flex items-center gap-4">
           <div className="relative">
             <motion.div
-              whileHover={{ rotate: 180 }}
-              className="w-12 h-12 bg-primary flex items-center justify-center text-white shadow-premium group-hover:bg-secondary transition-all duration-500 rounded-xl"
+              whileHover={{ scale: 1.05, rotate: 5 }}
+              className="w-12 h-12 bg-primary flex items-center justify-center text-white shadow-premium transition-all duration-500 rounded-2xl relative overflow-hidden"
             >
-              <Activity className="w-6 h-6" />
+              {/* Premium Shimmer Effect */}
+              <motion.div
+                animate={{
+                  x: ["-100%", "100%"],
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "linear",
+                }}
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12"
+              />
+              <span className="font-display font-black text-2xl relative z-10">T</span>
             </motion.div>
-            <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-secondary rounded-full border-2 border-white" />
+            <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-secondary rounded-full border-2 border-white shadow-sm animate-pulse" />
           </div>
           <div className="flex flex-col">
-            <span className="font-display font-bold text-2xl leading-none text-ink tracking-tight group-hover:text-primary transition-colors">
-              Tanveer<span className="text-primary italic">.</span>
+            <span className="font-display font-bold text-2xl leading-none text-ink tracking-tighter group-hover:text-primary transition-colors">
+              TANVEER<span className="text-primary italic">.</span>
             </span>
-            <span className="text-[9px] uppercase tracking-[0.4em] text-muted-foreground font-black mt-1.5 opacity-60">
+            <span className="text-[7px] uppercase tracking-[0.6em] text-muted-foreground font-black mt-2 opacity-80">
               Clinical Excellence
             </span>
           </div>
