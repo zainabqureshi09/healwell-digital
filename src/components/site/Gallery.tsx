@@ -22,7 +22,7 @@ const allImages = Array.from({ length: 71 }, (_, i) => {
   };
 });
 
-const MotionImage = motion(Image);
+const MotionImage = motion.create(Image);
 
 export function Gallery({ limit }: { limit?: number }) {
   const [selectedImg, setSelectedImg] = useState<string | null>(null);
