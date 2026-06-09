@@ -126,8 +126,8 @@ export function WhyUs() {
               </h2>
               <p className="text-xl text-muted-foreground leading-relaxed mb-12 font-medium">
                 Muhammad Tanveer combines years of clinical mastery with a multi-sector healthcare
-                philosophy. From MSK specialization to healthcare administration, we restore the
-                bio-mechanical integrity of your body.
+                philosophy. As a Healthcare Administrator and HOD Physiotherapy, he integrates
+                administrative excellence with specialized MSK and Pain Management.
               </p>
             </motion.div>
 

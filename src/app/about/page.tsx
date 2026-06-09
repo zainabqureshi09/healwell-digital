@@ -6,7 +6,7 @@ import { HomePhysio } from "@/components/site/HomePhysio";
 export const metadata: Metadata = {
   title: "About Muhammad Tanveer | Healthcare Administrator & Physiotherapist",
   description:
-    "Learn about Muhammad Tanveer, Assistant Healthcare Administrator and HOD Physiotherapy with 5+ years of expertise. Alumini of Aga Khan University Hospital.",
+    "Learn about Muhammad Tanveer, Assistant Healthcare Administrator at Jamila Sultan Welfare Society and HOD Physiotherapy at Dr Essa Center. AKUH Alumni and CEO of Ezaan Health Foundation.",
 };
 
 export default function AboutPage() {
@@ -26,7 +26,7 @@ export default function AboutPage() {
             name: "Muhammad Tanveer",
             jobTitle: "Assistant Healthcare Administrator & HOD Physiotherapy",
             description:
-              "Healthcare administrator and MSK specialist with over 5 years of experience. CEO of Ezaan Health and Education Foundation and AKUH Alumni.",
+              "Assistant Healthcare Administrator at Jamila Sultan Welfare Society, CEO of Ezaan Health, and HOD Physiotherapy at Dr Essa Center. AKUH Alumni & MSK Specialist.",
             image: "https://muhammadtanveer.site/assets/dr-tanveer.jpg",
             url: "https://muhammadtanveer.site/about",
             sameAs: [
@@ -41,6 +41,10 @@ export default function AboutPage() {
               {
                 "@type": "MedicalOrganization",
                 name: "Dr Essa Physiotherapy and Rehabilitation Center",
+              },
+              {
+                "@type": "Organization",
+                name: "Ezaan Health and Education Foundation",
               },
             ],
           }),

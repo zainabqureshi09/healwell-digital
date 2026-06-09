@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     default: "Muhammad Tanveer | Healthcare Administrator & HOD Physiotherapy Karachi",
   },
   description:
-    "Muhammad Tanveer is an Assistant Healthcare Administrator and HOD Physiotherapy in Karachi, specializing in clinical leadership, MSK rehabilitation, and pain management.",
+    "Muhammad Tanveer is an Assistant Healthcare Administrator at Jamila Sultan Welfare Society and HOD Physiotherapy at Dr Essa Center. AKUH Alumni and CEO of Ezaan Health Foundation.",
   authors: [{ name: "Muhammad Tanveer", url: "https://healwell-digital.vercel.app" }],
   keywords: [
     "Muhammad Tanveer",

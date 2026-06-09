@@ -38,8 +38,7 @@ export function ChatWidget() {
   const [messages, setMessages] = useState<Msg[]>([
     {
       role: "assistant",
-      content:
-        "Assalam-o-Alaikum! I'm Muhammad Tanveer's assistant. Ask me about his healthcare initiatives, clinical roles, or book a physiotherapy appointment. آپ اردو میں بھی بات کر سکتے ہیں۔",
+      content: "Assalam-o-Alaikum! I'm Muhammad Tanveer's assistant. Ask me about his healthcare leadership, clinical roles, or book a physiotherapy appointment. آپ اردو میں بھی بات کر سکتے ہیں۔",
     },
   ]);
   const [input, setInput] = useState("");

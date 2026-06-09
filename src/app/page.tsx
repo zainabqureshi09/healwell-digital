@@ -7,7 +7,7 @@ import type { Metadata } from "next";
 
 const title = "Muhammad Tanveer | Healthcare Administrator & HOD Physiotherapy Karachi";
 const description =
-  "Muhammad Tanveer — Assistant Healthcare Administrator and HOD Physiotherapy. Providing elite rehabilitation, pain management, and healthcare leadership in Karachi.";
+  "Muhammad Tanveer — Assistant Healthcare Administrator at Jamila Sultan Welfare Society and HOD Physiotherapy at Dr Essa Center. Providing elite rehabilitation and healthcare leadership in Karachi.";
 
 export const metadata: Metadata = {
   title,
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     title,
     description,
     type: "website",
-    url: "https://healwell-digital.vercel.app",
+    url: "https://www.muhammadtanveer.site",
   },
 };
 
@@ -64,9 +64,9 @@ export default function IndexPage() {
             "@context": "https://schema.org",
             "@type": "Physician",
             name: "Muhammad Tanveer",
-            image: "https://healwell-digital.vercel.app/assets/dr-tanveer.jpg",
+            image: "https://www.muhammadtanveer.site/assets/dr-tanveer.jpg",
             telePhone: "+92-342-7160092",
-            url: "https://healwell-digital.vercel.app",
+            url: "https://www.muhammadtanveer.site",
             priceRange: "$$",
             address: {
               "@type": "PostalAddress",
@@ -91,7 +91,7 @@ export default function IndexPage() {
             ],
             medicalSpecialty: "Physiotherapy",
             description:
-              "Muhammad Tanveer is an Assistant Healthcare Administrator and HOD Physiotherapy Department at Dr Essa Physiotherapy and Rehabilitation Center.",
+              "Muhammad Tanveer is an Assistant Healthcare Administrator at Jamila Sultan Welfare Society and HOD Physiotherapy Department at Dr Essa Physiotherapy and Rehabilitation Center.",
             areaServed: "Karachi",
             aggregateRating: {
               "@type": "AggregateRating",

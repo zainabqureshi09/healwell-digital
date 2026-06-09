@@ -5,8 +5,9 @@ import Link from "next/link";
 const points = [
   "Assistant Healthcare Administrator Jamila Sultan Welfare Society Projects",
   "CEO/Founder of Ezaan Health and Education Foundation",
-  "HOD Physiotherapy Department Dr Essa Physiotherapy Center",
-  "MSK and Pain Specialist & AKUH Alumni",
+  "HOD Physiotherapy Department Dr Essa Physiotherapy and Rehabilitation Center MSK and Pain Specialist",
+  "Former HOD Physiotherapy Department The Health Bank Global Pakistan",
+  "Alumini of Aga Khan University Hospital",
 ];
 
 export function About() {
@@ -53,8 +54,9 @@ export function About() {
               Muhammad Tanveer is a multi-faceted healthcare leader, serving as the Assistant
               Healthcare Administrator for Jamila Sultan Welfare Society Projects and the
               CEO/Founder of Ezaan Health and Education Foundation. As an Alumini of Aga Khan
-              University Hospital, he brings elite clinical standards to his role as HOD of the
-              Physiotherapy Department at Dr Essa Physiotherapy and Rehabilitation Center.
+              University Hospital and MSK and Pain Specialist, he currently serves as HOD of the
+              Physiotherapy Department at Dr Essa Physiotherapy and Rehabilitation Center,
+              formerly leading the department at The Health Bank Global Pakistan.
             </p>
 
             <ul className="grid sm:grid-cols-2 gap-6 mb-12">

@@ -22,8 +22,7 @@ export function Footer() {
             </Link>
             <p className="mt-8 text-white/70 leading-relaxed text-sm max-w-sm">
               Dedicated to healthcare leadership and clinical excellence. Assistant Healthcare
-              Administrator and HOD Physiotherapy providing elite rehabilitation and administrative
-              oversight.
+              Administrator at Jamila Sultan Welfare Society and HOD Physiotherapy at Dr Essa Center.
             </p>
             <div className="mt-8 flex gap-4">
               {[

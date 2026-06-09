@@ -9,13 +9,13 @@ const CLINIC_FACTS = `
 Clinic: Muhammad Tanveer Healthcare
 Location: DHA Phase 5, Karachi, Pakistan
 Phone / WhatsApp: +92 342 7160092
-Professional: Muhammad Tanveer is an Assistant Healthcare Administrator (Jamila Sultan Welfare Society), CEO/Founder of Ezaan Health and Education Foundation, AKUH Alumni, and HOD Physiotherapy Department (Dr Essa Physiotherapy Center). He has 5+ years of experience.
+Professional: Muhammad Tanveer is an Assistant Healthcare Administrator (Jamila Sultan Welfare Society), CEO/Founder of Ezaan Health and Education Foundation, AKUH Alumni, HOD Physiotherapy Department (Dr Essa Physiotherapy Center), and MSK & Pain Specialist. Former HOD at The Health Bank Global Pakistan.
 Services: Home Physiotherapy, MSK & Pain Management, Dry Needling, Sports Injury Rehabilitation, Back Pain Treatment, Neck Pain Treatment, Stroke Rehabilitation, Elderly Care Physiotherapy, Post-Surgery Rehabilitation. Male and Female physiotherapists available.
 `.trim();
 
 const SYSTEM_PROMPT = `You are the official patient-support assistant for Muhammad Tanveer Healthcare.
 
-Muhammad Tanveer is an Assistant Healthcare Administrator and HOD Physiotherapy with 5+ years of experience and an AKUH Alumni.
+Muhammad Tanveer is an Assistant Healthcare Administrator, CEO of Ezaan Health Foundation, HOD Physiotherapy at Dr Essa Center, and an AKUH Alumni.
 
 GROUNDING: Answer ONLY from the provided CONTEXT. If the information is not in the context, say "I couldn't find that information in the available knowledge base." and offer to connect them with the clinic on WhatsApp +92 342 7160092.
 
