@@ -8,7 +8,13 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 
-type Msg = { role: "user" | "assistant"; content: string; bookIntent?: boolean };
+type Msg = { 
+  role: "user" | "assistant"; 
+  content: string; 
+  bookIntent?: boolean;
+  citations?: string[];
+  confidence?: number;
+};
 
 function getSessionId() {
   if (typeof window === "undefined") return "ssr";
@@ -33,7 +39,7 @@ export function ChatWidget() {
     {
       role: "assistant",
       content:
-        "Assalam-o-Alaikum! I'm Muhammad Tanveer's clinic assistant. Ask me about physiotherapy treatments, home visits, pricing, or book an appointment. آپ اردو میں بھی بات کر سکتے ہیں۔",
+        "Assalam-o-Alaikum! I'm Muhammad Tanveer's assistant. Ask me about his healthcare initiatives, clinical roles, or book a physiotherapy appointment. آپ اردو میں بھی بات کر سکتے ہیں۔",
     },
   ]);
   const [input, setInput] = useState("");
@@ -87,7 +93,13 @@ export function ChatWidget() {
       setConversationId(res.conversationId);
       setMessages((m) => [
         ...m,
-        { role: "assistant", content: res.reply, bookIntent: res.bookIntent },
+        { 
+          role: "assistant", 
+          content: res.reply, 
+          bookIntent: res.bookIntent,
+          citations: res.citations,
+          confidence: res.confidence
+        },
       ]);
       if (res.bookIntent) {
         setLead((l) => ({ ...l, problem: l.problem || content }));
@@ -190,6 +202,37 @@ export function ChatWidget() {
                   }
                 >
                   {m.content}
+
+                  {m.role === "assistant" && m.citations && m.citations.length > 0 && (
+                    <div className="mt-4 pt-4 border-t border-border/50">
+                      <div className="text-[9px] uppercase tracking-widest font-black text-muted-foreground mb-2 flex items-center gap-1.5">
+                        <FileText size={10} /> Clinical Sources
+                      </div>
+                      <div className="flex flex-wrap gap-1.5">
+                        {m.citations.map((c, ci) => (
+                          <span key={ci} className="bg-background text-[9px] px-2 py-1 rounded border border-border/50 font-bold text-muted-foreground">
+                            {c}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {m.role === "assistant" && m.confidence !== undefined && (
+                    <div className="mt-3 flex items-center gap-2">
+                      <div className="text-[9px] uppercase tracking-widest font-black text-muted-foreground">
+                        Confidence
+                      </div>
+                      <div className="flex-1 h-1 bg-background rounded-full overflow-hidden max-w-[60px]">
+                        <div 
+                          className={`h-full transition-all duration-1000 ${m.confidence > 70 ? "bg-green-500" : m.confidence > 40 ? "bg-amber-500" : "bg-red-500"}`}
+                          style={{ width: `${m.confidence}%` }}
+                        />
+                      </div>
+                      <span className="text-[9px] font-black text-muted-foreground/50">{m.confidence}%</span>
+                    </div>
+                  )}
+                  
                   {m.bookIntent && m.role === "assistant" && (
                     <motion.button
                       whileHover={{ scale: 1.02 }}

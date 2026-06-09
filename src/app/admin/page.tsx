@@ -10,7 +10,7 @@ import {
   updateLeadStatus,
   getAnalytics,
 } from "@/lib/admin.functions";
-import { listDocuments, ingestDocument, deleteDocument } from "@/lib/kb.functions";
+import { listDocuments, ingestDocument, deleteDocument, processFileAndIngest, processUrlAndIngest } from "@/lib/kb.functions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -18,7 +18,7 @@ import { Card } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { Loader2, Trash2, LogOut } from "lucide-react";
+import { Loader2, Trash2, LogOut, Upload, Globe, FileText, CheckCircle2, AlertCircle } from "lucide-react";
 
 export default function AdminPage() {
   const router = useRouter();
@@ -159,6 +159,7 @@ export default function AdminPage() {
 function KBPanel() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [url, setUrl] = useState("");
   const [busy, setBusy] = useState(false);
   const [docs, setDocs] = useState<
     Array<{ id: string; title: string; source_type: string; created_at: string }>
@@ -177,7 +178,7 @@ function KBPanel() {
     refresh();
   }, [refresh]);
 
-  async function submit(e: React.FormEvent) {
+  async function submitText(e: React.FormEvent) {
     e.preventDefault();
     setBusy(true);
     try {
@@ -193,90 +194,154 @@ function KBPanel() {
     }
   }
 
+  async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setBusy(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await processFileAndIngest(formData);
+      toast.success(`File indexed: ${res.chunks} chunks.`);
+      refresh();
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Upload failed");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function submitUrl(e: React.FormEvent) {
+    e.preventDefault();
+    setBusy(true);
+    try {
+      const res = await processUrlAndIngest(url);
+      toast.success(`Website indexed: ${res.chunks} chunks.`);
+      setUrl("");
+      refresh();
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Scraping failed");
+    } finally {
+      setBusy(false);
+    }
+  }
+
   return (
     <div className="grid gap-12 lg:grid-cols-12">
-      <div className="lg:col-span-7">
+      <div className="lg:col-span-7 space-y-8">
         <div className="bg-white p-8 border border-border shadow-premium">
-          <h2 className="text-xl font-display font-bold text-ink mb-2">Ingest Clinical Data</h2>
+          <h2 className="text-xl font-display font-bold text-ink mb-2">Manual Entry</h2>
           <p className="text-xs text-muted-foreground mb-8">
-            Provide medical protocols, service FAQs, or treatment guides to enhance the AI medical
-            assistant.
+            Add clinical knowledge or FAQs manually.
           </p>
-          <form onSubmit={submit} className="space-y-6">
-            <div className="space-y-2">
-              <label className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground">
-                Document Title
-              </label>
-              <input
-                placeholder="e.g. Lower Back Rehabilitation Protocol"
-                required
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                className="w-full bg-background border-b border-border p-4 text-sm focus:border-primary focus:outline-none transition-colors"
-              />
-            </div>
-            <div className="space-y-2">
-              <label className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground">
-                Clinical Content
-              </label>
-              <textarea
-                placeholder="Detailed medical text..."
-                required
-                rows={12}
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                className="w-full bg-background border-b border-border p-4 text-sm focus:border-primary focus:outline-none transition-colors resize-none"
-              />
-            </div>
+          <form onSubmit={submitText} className="space-y-6">
+            <input
+              placeholder="Document Title"
+              required
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="w-full bg-background border-b border-border p-4 text-sm focus:border-primary focus:outline-none"
+            />
+            <textarea
+              placeholder="Content..."
+              required
+              rows={6}
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              className="w-full bg-background border-b border-border p-4 text-sm focus:border-primary focus:outline-none resize-none"
+            />
             <button
-              type="submit"
               disabled={busy}
-              className="w-full bg-primary text-white py-4 px-8 text-[10px] font-bold tracking-widest uppercase hover:bg-secondary transition-all duration-300 disabled:opacity-50"
+              className="w-full bg-primary text-white py-4 px-8 text-[10px] font-bold uppercase tracking-widest hover:bg-secondary disabled:opacity-50"
             >
               {busy ? <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin inline" /> : null}
-              Process & Index Document
+              Index Text
+            </button>
+          </form>
+        </div>
+
+        <div className="bg-white p-8 border border-border shadow-premium">
+          <h2 className="text-xl font-display font-bold text-ink mb-2">Document Upload</h2>
+          <p className="text-xs text-muted-foreground mb-8">
+            PDF, DOCX, or TXT (Max 10MB)
+          </p>
+          <div className="relative group">
+            <input
+              type="file"
+              accept=".pdf,.docx,.txt"
+              onChange={handleFileUpload}
+              disabled={busy}
+              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10 disabled:cursor-not-allowed"
+            />
+            <div className="border-2 border-dashed border-border p-12 text-center group-hover:border-primary/40 transition-colors">
+              <Upload className="h-8 w-8 mx-auto text-muted-foreground mb-4 group-hover:text-primary" />
+              <div className="text-[10px] font-bold uppercase tracking-widest">
+                Click to upload or drag & drop
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white p-8 border border-border shadow-premium">
+          <h2 className="text-xl font-display font-bold text-ink mb-2">Web Scraper</h2>
+          <p className="text-xs text-muted-foreground mb-8">
+            Crawl content from a medical URL.
+          </p>
+          <form onSubmit={submitUrl} className="flex gap-4">
+            <input
+              type="url"
+              placeholder="https://..."
+              required
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              className="flex-1 bg-background border-b border-border p-4 text-sm focus:border-primary focus:outline-none"
+            />
+            <button
+              disabled={busy}
+              className="bg-primary text-white px-8 py-4 text-[10px] font-bold uppercase hover:bg-secondary disabled:opacity-50"
+            >
+              {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Globe className="h-3.5 w-3.5" />}
             </button>
           </form>
         </div>
       </div>
 
       <div className="lg:col-span-5">
-        <div className="bg-white p-8 border border-border shadow-premium">
+        <div className="bg-white p-8 border border-border shadow-premium sticky top-8">
           <h2 className="text-xl font-display font-bold text-ink mb-6">
-            Medical Repository ({docs.length})
+            Clinical Repository ({docs.length})
           </h2>
-          <div className="space-y-4">
+          <div className="space-y-4 max-h-[800px] overflow-y-auto pr-2">
             {docs.map((d) => (
               <div
                 key={d.id}
                 className="flex items-center justify-between border border-border p-5 group hover:border-primary/20 transition-colors bg-background"
               >
                 <div className="overflow-hidden mr-4">
-                  <div className="font-display font-bold text-ink truncate group-hover:text-primary transition-colors">
-                    {d.title}
+                  <div className="flex items-center gap-2 mb-1">
+                    {d.source_type === "pdf" && <FileText className="h-3 w-3 text-red-500" />}
+                    {d.source_type === "docx" && <FileText className="h-3 w-3 text-blue-500" />}
+                    {d.source_type === "url" && <Globe className="h-3 w-3 text-primary" />}
+                    <div className="font-display font-bold text-ink truncate text-sm">
+                      {d.title}
+                    </div>
                   </div>
-                  <div className="text-[10px] uppercase tracking-widest text-muted-foreground mt-1 font-bold">
+                  <div className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">
                     {new Date(d.created_at).toLocaleDateString()}
                   </div>
                 </div>
                 <button
-                  className="w-10 h-10 flex items-center justify-center text-muted-foreground hover:text-destructive transition-colors border border-border group-hover:bg-white"
+                  className="w-8 h-8 flex items-center justify-center text-muted-foreground hover:text-destructive transition-colors border border-border group-hover:bg-white"
                   onClick={async () => {
-                    if (!confirm("Confirm removal of this document from medical repository?"))
-                      return;
+                    if (!confirm("Confirm removal?")) return;
                     await deleteDocument({ id: d.id });
                     refresh();
                   }}
                 >
-                  <Trash2 className="h-4 w-4" />
+                  <Trash2 className="h-3.5 w-3.5" />
                 </button>
               </div>
             ))}
-            {!docs.length && (
-              <p className="text-xs text-muted-foreground font-medium italic">
-                Repository is currently empty.
-              </p>
-            )}
           </div>
         </div>
       </div>
@@ -424,6 +489,7 @@ function AnalyticsPanel() {
     documents: number;
     leadStatus: Record<string, number>;
     recentQuestions: string[];
+    qdrantStatus: string;
   } | null>(null);
 
   useEffect(() => {
@@ -468,8 +534,19 @@ function AnalyticsPanel() {
       <div className="grid lg:grid-cols-12 gap-12">
         <div className="lg:col-span-4">
           <div className="bg-white p-8 border border-border shadow-premium h-full">
-            <h3 className="text-xl font-display font-bold text-ink mb-8">Inquiry Pipeline</h3>
+            <h3 className="text-xl font-display font-bold text-ink mb-8">System Health</h3>
             <div className="space-y-6">
+              <div className="flex items-center justify-between border-b border-border pb-4">
+                <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground">
+                  Qdrant Vector DB
+                </span>
+                <div className="flex items-center gap-2">
+                  <span className={`w-2 h-2 rounded-full ${stats.qdrantStatus === "Connected" ? "bg-green-500" : "bg-red-500"}`} />
+                  <span className="text-sm font-bold text-ink">{stats.qdrantStatus}</span>
+                </div>
+              </div>
+              
+              <h4 className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground mt-8 mb-4">Inquiry Pipeline</h4>
               {Object.entries(stats.leadStatus).map(([k, v]) => (
                 <div
                   key={k}
@@ -481,9 +558,6 @@ function AnalyticsPanel() {
                   <span className="text-2xl font-display font-bold text-primary">{v}</span>
                 </div>
               ))}
-              {!Object.keys(stats.leadStatus).length && (
-                <p className="text-sm text-muted-foreground italic">No pipeline data available.</p>
-              )}
             </div>
           </div>
         </div>

@@ -5,23 +5,20 @@ import { MapSection } from "@/components/site/MapSection";
 import Link from "next/link";
 import type { Metadata } from "next";
 
-const title = "Best Physiotherapist in Karachi | Muhammad Tanveer — Home Physiotherapy";
+const title = "Muhammad Tanveer | Healthcare Administrator & HOD Physiotherapy Karachi";
 const description =
-  "Muhammad Tanveer — trusted physiotherapist in Karachi. Home physiotherapy, back pain, sports injury, dry needling & post-surgery rehab. Book today: 0342 7160092.";
+  "Muhammad Tanveer — Assistant Healthcare Administrator and HOD Physiotherapy. Providing elite rehabilitation, pain management, and healthcare leadership in Karachi.";
 
 export const metadata: Metadata = {
   title,
   description,
   keywords:
-    "physiotherapist in Karachi, home physiotherapy Karachi, dry needling Karachi, back pain treatment Karachi, sports injury physiotherapist Karachi, physiotherapy at home Karachi",
+    "Muhammad Tanveer, Healthcare Administrator Karachi, HOD Physiotherapy, Ezaan Health, Dr Essa Physiotherapy, AKUH Alumni, Physiotherapist Karachi",
   openGraph: {
     title,
     description,
     type: "website",
-    url: "/",
-  },
-  twitter: {
-    card: "summary_large_image",
+    url: "https://healwell-digital.vercel.app",
   },
 };
 
@@ -33,9 +30,9 @@ export default function IndexPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap items-center justify-between gap-8">
             <div className="max-w-md">
-              <h2 className="text-2xl font-display font-bold text-ink mb-2">Clinical Excellence</h2>
+              <h2 className="text-2xl font-display font-bold text-ink mb-2">Healthcare Leadership</h2>
               <p className="text-sm text-muted-foreground font-medium">
-                Explore our premium services and practitioner experience.
+                Combining administrative excellence with clinical mastery.
               </p>
             </div>
             <div className="flex gap-4">
@@ -65,23 +62,41 @@ export default function IndexPage() {
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",
-            "@type": "MedicalBusiness",
-            name: "Muhammad Tanveer Physiotherapist",
-            image: "/",
-            telephone: "+92-342-7160092",
+            "@type": "Physician",
+            name: "Muhammad Tanveer",
+            image: "https://healwell-digital.vercel.app/assets/dr-tanveer.jpg",
+            telePhone: "+92-342-7160092",
+            url: "https://healwell-digital.vercel.app",
             priceRange: "$$",
             address: {
               "@type": "PostalAddress",
               streetAddress: "DHA Phase 5",
               addressLocality: "Karachi",
+              addressRegion: "Sindh",
+              postalCode: "75500",
               addressCountry: "PK",
             },
+            geo: {
+              "@type": "GeoCoordinates",
+              latitude: "24.7938",
+              longitude: "67.0422",
+            },
+            openingHoursSpecification: [
+              {
+                "@type": "OpeningHoursSpecification",
+                dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+                opens: "09:00",
+                closes: "21:00",
+              },
+            ],
             medicalSpecialty: "Physiotherapy",
+            description:
+              "Muhammad Tanveer is an Assistant Healthcare Administrator and HOD Physiotherapy Department at Dr Essa Physiotherapy and Rehabilitation Center.",
             areaServed: "Karachi",
             aggregateRating: {
               "@type": "AggregateRating",
               ratingValue: "4.9",
-              reviewCount: "500",
+              reviewCount: "520",
             },
           }),
         }}

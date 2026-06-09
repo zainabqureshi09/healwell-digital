@@ -16,14 +16,14 @@ export function Footer() {
                   Muhammad Tanveer
                 </span>
                 <span className="text-[10px] uppercase tracking-[0.2em] text-white/60 font-semibold mt-1">
-                  Physiotherapist
+                  Healthcare Admin & HOD
                 </span>
               </div>
             </Link>
             <p className="mt-8 text-white/70 leading-relaxed text-sm max-w-sm">
-              Dedicated to providing elite physiotherapy services. Our mission is to restore
-              movement and enhance quality of life through personalized care, whether in-clinic or
-              at your residence.
+              Dedicated to healthcare leadership and clinical excellence. Assistant Healthcare
+              Administrator and HOD Physiotherapy providing elite rehabilitation and administrative
+              oversight.
             </p>
             <div className="mt-8 flex gap-4">
               {[
@@ -146,7 +146,7 @@ export function Footer() {
 
         <div className="mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
           <p className="text-[10px] uppercase tracking-widest text-white/30 font-semibold">
-            © {new Date().getFullYear()} Muhammad Tanveer Physiotherapist. All rights reserved.
+            © {new Date().getFullYear()} Muhammad Tanveer. All rights reserved.
           </p>
           <p className="text-[10px] uppercase tracking-widest text-white/30 font-semibold">
             Premium Healthcare Excellence in Karachi

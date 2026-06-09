@@ -125,9 +125,9 @@ export function WhyUs() {
                 Redefining <span className="italic text-primary">Recovery</span> through Science.
               </h2>
               <p className="text-xl text-muted-foreground leading-relaxed mb-12 font-medium">
-                Dr. Muhammad Tanveer combines a decade of clinical mastery with a patient-centric
-                philosophy. We don&apos;t just treat symptoms; we restore the bio-mechanical
-                integrity of your body.
+                Muhammad Tanveer combines years of clinical mastery with a multi-sector healthcare
+                philosophy. From MSK specialization to healthcare administration, we restore the
+                bio-mechanical integrity of your body.
               </p>
             </motion.div>
 
@@ -175,7 +175,7 @@ export function WhyUs() {
               <div className="space-y-16 relative z-10">
                 <div className="flex items-end gap-8">
                   <span className="text-7xl lg:text-9xl font-display font-bold text-primary leading-none tracking-tighter">
-                    <Counter value={10} suffix="+" />
+                    <Counter value={5} suffix="+" />
                   </span>
                   <div className="mb-4">
                     <div className="text-[11px] uppercase tracking-[0.3em] font-black text-muted-foreground mb-2">
@@ -189,7 +189,7 @@ export function WhyUs() {
 
                 <div className="flex items-end gap-8">
                   <span className="text-7xl lg:text-9xl font-display font-bold text-secondary leading-none tracking-tighter">
-                    <Counter value={5} suffix="k+" />
+                    <Counter value={2} suffix="k+" />
                   </span>
                   <div className="mb-4">
                     <div className="text-[11px] uppercase tracking-[0.3em] font-black text-muted-foreground mb-2">
@@ -205,10 +205,10 @@ export function WhyUs() {
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {[
-                      "DPT Specialist",
-                      "Certified Manual Therapist",
-                      "Dry Needling Pro",
-                      "PPTA Senior Member",
+                      "Healthcare Admin",
+                      "AKUH Alumni",
+                      "MSK & Pain Specialist",
+                      "HOD Physiotherapy",
                     ].map((cert) => (
                       <div
                         key={cert}

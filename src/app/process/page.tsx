@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { Process as ProcessSection } from "@/components/site/Process";
 
 export const metadata: Metadata = {
-  title: "Our Methodology | Muhammad Tanveer Physiotherapist",
+  title: "Our Methodology | Muhammad Tanveer Healthcare",
   description:
     "Discover our structured clinical approach to recovery, from initial assessment to personalized treatment and peak performance.",
 };

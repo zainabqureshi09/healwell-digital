@@ -65,7 +65,7 @@ export default function LoginPage() {
                 Muhammad Tanveer
               </span>
               <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-semibold mt-1">
-                Physiotherapist
+                Healthcare Admin & HOD
               </span>
             </div>
           </Link>
@@ -74,7 +74,7 @@ export default function LoginPage() {
             {mode === "login" ? "Medical Portal" : "Admin Registration"}
           </h1>
           <p className="text-muted-foreground text-sm font-medium max-w-xs mx-auto">
-            Authorized access for Muhammad Tanveer&apos;s healthcare administration and patient
+            Authorized access for Muhammad Tanveer&apos;s healthcare administration and Foundation
             management.
           </p>
         </div>
@@ -141,7 +141,7 @@ export default function LoginPage() {
         </div>
 
         <p className="mt-8 text-center text-[10px] uppercase tracking-tighter text-muted-foreground font-semibold">
-          Secure Medical Portal · Muhammad Tanveer Physiotherapist
+          Secure Medical Portal · Muhammad Tanveer Healthcare
         </p>
       </div>
     </div>

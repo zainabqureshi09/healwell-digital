@@ -97,7 +97,7 @@ export function Hero() {
             <motion.div variants={itemVariants} className="flex items-center gap-3 mb-8">
               <div className="w-16 h-[1px] bg-primary/40" />
               <span className="text-[11px] uppercase tracking-[0.4em] font-black text-primary/80">
-                Pioneering Physiotherapy in Karachi
+                Healthcare Leadership & Clinical Excellence
               </span>
             </motion.div>
 
@@ -105,9 +105,9 @@ export function Hero() {
               variants={itemVariants}
               className="text-6xl sm:text-7xl lg:text-9xl font-display font-bold text-ink leading-[0.95] mb-10 tracking-tighter"
             >
-              Master Your <br />
+              Muhammad <br />
               <span className="italic text-primary relative inline-block">
-                Movement.
+                Tanveer.
                 <motion.div
                   initial={{ scaleX: 0 }}
                   animate={{ scaleX: 1 }}
@@ -121,8 +121,8 @@ export function Hero() {
               variants={itemVariants}
               className="text-xl lg:text-2xl text-muted-foreground max-w-2xl leading-relaxed mb-12 font-medium"
             >
-              Elite, bespoke rehabilitation by Dr. Muhammad Tanveer. Transforming lives through
-              advanced manual therapy and precision clinical care.
+              Assistant Healthcare Administrator & HOD Physiotherapy. CEO of Ezaan Health Foundation
+              and AKUH Alumni. Transforming healthcare through leadership and precision care.
             </motion.p>
 
             {/* CTA */}
@@ -151,7 +151,7 @@ export function Hero() {
             <motion.div variants={itemVariants} className="flex items-center gap-12 flex-wrap">
               <div className="relative group">
                 <div className="text-4xl font-display font-bold text-ink group-hover:text-primary transition-colors">
-                  10+
+                  5+
                 </div>
                 <div className="text-[10px] uppercase tracking-widest text-muted-foreground font-black mt-1">
                   Years Expertise
@@ -197,12 +197,13 @@ export function Hero() {
               <div className="relative aspect-[4/5] overflow-hidden shadow-[0_50px_100px_-20px_rgba(15,76,129,0.3)] transition-all duration-700 group-hover:shadow-[0_80px_150px_-30px_rgba(15,76,129,0.4)]">
                 <Image
                   src="/assets/dr-tanveer.jpg"
-                  alt="Muhammad Tanveer - Expert Physiotherapist"
+                  alt="Muhammad Tanveer - Healthcare Administrator & HOD Physiotherapy"
                   fill
                   className="object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all duration-700 scale-105 group-hover:scale-100"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   priority
                   loading="eager"
+                  fetchPriority="high"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-ink/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               </div>
@@ -216,7 +217,7 @@ export function Hero() {
                   Muhammad Tanveer
                 </div>
                 <div className="text-[10px] uppercase tracking-[0.3em] font-black text-muted-foreground mt-3 flex items-center gap-2">
-                  <div className="w-4 h-[1px] bg-primary/30" /> DPT Specialist
+                  <div className="w-4 h-[1px] bg-primary/30" /> Healthcare Admin & HOD
                 </div>
               </motion.div>
 

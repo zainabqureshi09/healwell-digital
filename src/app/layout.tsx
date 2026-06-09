@@ -26,17 +26,42 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Muhammad Tanveer | Best Physiotherapist in Karachi",
+  metadataBase: new URL("https://healwell-digital.vercel.app"),
+  title: {
+    template: "%s | Muhammad Tanveer Healthcare Administrator & HOD",
+    default: "Muhammad Tanveer | Healthcare Administrator & HOD Physiotherapy Karachi",
+  },
   description:
-    "Professional physiotherapy services in Karachi. Specializing in home care, sports injuries, and rehabilitation.",
-  authors: [{ name: "Muhammad Tanveer" }],
+    "Muhammad Tanveer is an Assistant Healthcare Administrator and HOD Physiotherapy in Karachi, specializing in clinical leadership, MSK rehabilitation, and pain management.",
+  authors: [{ name: "Muhammad Tanveer", url: "https://healwell-digital.vercel.app" }],
+  keywords: [
+    "Muhammad Tanveer",
+    "Healthcare Administrator Karachi",
+    "HOD Physiotherapy Karachi",
+    "Ezaan Health Foundation",
+    "Dr Essa Physiotherapy",
+    "AKUH Alumni",
+    "MSK Specialist Karachi",
+    "Pain Management Karachi",
+  ],
   openGraph: {
-    title: "Muhammad Tanveer | Physiotherapist",
-    description: "Professional physiotherapy services in Karachi.",
+    title: "Muhammad Tanveer | Healthcare Administrator & HOD Physiotherapy",
+    description: "Elite clinical leadership and rehabilitation services in Karachi.",
+    url: "https://healwell-digital.vercel.app",
+    siteName: "Muhammad Tanveer Healthcare",
+    locale: "en_PK",
     type: "website",
   },
+  alternates: {
+    canonical: "/",
+  },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
+    title: "Muhammad Tanveer | Healthcare Administrator & HOD",
+    description: "Elite clinical leadership and rehabilitation services in Karachi.",
+  },
+  verification: {
+    google: "add-your-google-verification-code-here",
   },
 };
 

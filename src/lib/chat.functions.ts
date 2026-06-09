@@ -3,30 +3,27 @@
 import { z } from "zod";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { chatComplete, embedText, type ChatMsg } from "./ai.server";
+import { getQdrantClient, COLLECTION_NAME } from "./qdrant.server";
 
 const CLINIC_FACTS = `
-Clinic: Muhammad Tanveer Physiotherapist
+Clinic: Muhammad Tanveer Healthcare
 Location: DHA Phase 5, Karachi, Pakistan
 Phone / WhatsApp: +92 342 7160092
-Services: Home Physiotherapy, Dry Needling, Sports Injury Rehabilitation, Back Pain Treatment, Neck Pain Treatment, Stroke Rehabilitation, Elderly Care Physiotherapy, Post-Surgery Rehabilitation, Pain Management Therapy. Male and Female physiotherapists available.
+Professional: Muhammad Tanveer is an Assistant Healthcare Administrator (Jamila Sultan Welfare Society), CEO/Founder of Ezaan Health and Education Foundation, AKUH Alumni, and HOD Physiotherapy Department (Dr Essa Physiotherapy Center). He has 5+ years of experience.
+Services: Home Physiotherapy, MSK & Pain Management, Dry Needling, Sports Injury Rehabilitation, Back Pain Treatment, Neck Pain Treatment, Stroke Rehabilitation, Elderly Care Physiotherapy, Post-Surgery Rehabilitation. Male and Female physiotherapists available.
 `.trim();
 
-const SYSTEM_PROMPT = `You are the official patient-support assistant for Muhammad Tanveer Physiotherapist clinic in DHA Phase 5, Karachi.
+const SYSTEM_PROMPT = `You are the official patient-support assistant for Muhammad Tanveer Healthcare.
 
-LANGUAGE: Auto-detect the user's language. If they write in Urdu or Roman Urdu, reply in the SAME script they used. Otherwise reply in English. Keep tone warm, professional, concise.
+Muhammad Tanveer is an Assistant Healthcare Administrator and HOD Physiotherapy with 5+ years of experience and an AKUH Alumni.
 
-GROUNDING: Prefer the CLINIC KNOWLEDGE BASE excerpts below over your own knowledge. If the answer is not in the knowledge base, use the clinic facts. If you genuinely don't know, say so and offer to connect them with the clinic on WhatsApp.
+GROUNDING: Answer ONLY from the provided CONTEXT. If the information is not in the context, say "I couldn't find that information in the available knowledge base." and offer to connect them with the clinic on WhatsApp +92 342 7160092.
 
-SAFETY RULES (non-negotiable):
-- Never diagnose conditions.
-- Never prescribe medication.
-- Never guarantee treatment outcomes.
-- Always recommend in-person consultation with a licensed physiotherapist.
-- For red-flag symptoms (sudden severe pain, loss of bowel/bladder control, numbness in legs, chest pain, stroke signs), urge the patient to seek emergency care immediately.
+STYLE: Professional, concise, warm. Use bullet lists. No hallucinations. 
 
-LEAD CAPTURE: If the patient describes a problem ("I have back pain", "need home physio", "kitne paise lagain ge", "appointment chahiye"), end your reply with the exact token [[BOOK_INTENT]] on its own line so the UI can show a booking form. Do not mention the token to the patient.
+CITE SOURCES: Always cite your sources by referencing the document title in square brackets like [Source: Title].
 
-STYLE: Short paragraphs, bullet lists when useful, no markdown headers. Mention WhatsApp +92 342 7160092 when escalating.`;
+LEAD CAPTURE: If they want to book or ask about prices/home visits, include [[BOOK_INTENT]] at the end.`;
 
 const ragChatSchema = z.object({
   message: z.string().trim().min(1).max(2000),
@@ -62,32 +59,41 @@ export async function ragChat(input: z.infer<typeof ragChatSchema>) {
   }
   const conversationId = convo!.id;
 
-  // 2. Retrieve relevant chunks
+  // 2. Retrieve from Qdrant
   let context = "";
+  let citations: string[] = [];
+  let maxScore = 0;
+
   try {
     const embedding = await embedText(data.message);
-    const { data: chunks } = await supabaseAdmin.rpc("match_kb_chunks", {
-      query_embedding: `[${embedding.join(",")}]`,
-      match_count: 5,
+    const qdrant = getQdrantClient();
+    const results = await qdrant.search(COLLECTION_NAME, {
+      vector: embedding,
+      limit: 5,
+      with_payload: true,
     });
-    if (chunks && chunks.length) {
-      context = chunks
-        .map(
-          (c: { content: string; similarity: number }, i: number) =>
-            `[${i + 1}] (relevance ${c.similarity.toFixed(2)})\n${c.content}`,
-        )
+
+    if (results.length > 0) {
+      maxScore = results[0].score;
+      context = results
+        .map((r, i) => {
+          const payload = r.payload as any;
+          const source = payload.title || "Unknown Source";
+          if (!citations.includes(source)) citations.push(source);
+          return `[Chunk ${i + 1} from ${source}]\n${payload.content}`;
+        })
         .join("\n\n");
     }
   } catch (e) {
-    console.error("RAG retrieval failed", e);
+    console.error("Qdrant retrieval failed", e);
   }
 
-  // 3. Compose messages
+  // 3. Generation
   const messages: ChatMsg[] = [
     { role: "system", content: SYSTEM_PROMPT },
     {
       role: "system",
-      content: `CLINIC FACTS:\n${CLINIC_FACTS}\n\nCLINIC KNOWLEDGE BASE:\n${context || "(no matching entries — rely on clinic facts and ask the patient to contact us on WhatsApp for specifics)"}`,
+      content: `CONTEXT:\n${context || "No context found."}\n\nCLINIC FACTS:\n${CLINIC_FACTS}`,
     },
     ...data.history.map((m) => ({ role: m.role, content: m.content }) as ChatMsg),
     { role: "user", content: data.message },
@@ -103,7 +109,13 @@ export async function ragChat(input: z.infer<typeof ragChatSchema>) {
     { conversation_id: conversationId, role: "assistant", content: reply },
   ]);
 
-  return { reply, bookIntent, conversationId };
+  return { 
+    reply, 
+    bookIntent, 
+    conversationId, 
+    citations, 
+    confidence: Math.round(maxScore * 100) 
+  };
 }
 
 const captureLeadSchema = z.object({

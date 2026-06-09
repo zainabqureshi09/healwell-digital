@@ -64,7 +64,7 @@ export function Nav() {
               TANVEER<span className="text-primary italic">.</span>
             </span>
             <span className="text-[7px] uppercase tracking-[0.6em] text-muted-foreground font-black mt-2 opacity-80">
-              Clinical Excellence
+              Healthcare & Rehabilitation
             </span>
           </div>
         </Link>

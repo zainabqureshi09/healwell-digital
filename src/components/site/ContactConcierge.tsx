@@ -22,7 +22,7 @@ export function ContactConcierge() {
       label: "WhatsApp",
       onClick: () => {
         window.open(
-          "https://wa.me/923427160092?text=Hi%20Dr.%20Tanveer%2C%20I%27d%20like%20to%20book%20a%20physiotherapy%20appointment.",
+          "https://wa.me/923427160092?text=Hi%20Muhammad%20Tanveer%2C%20I%27d%20like%20to%20book%20a%20physiotherapy%20appointment.",
           "_blank",
         );
         setOpen(false);

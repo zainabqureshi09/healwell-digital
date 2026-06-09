@@ -3,10 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 
 const points = [
-  "Doctor of Physiotherapy (DPT) — registered practitioner",
-  "10+ years treating orthopedic, neuro & sports patients",
-  "Specialized in dry needling & manual therapy",
-  "Trusted by athletes, post-op patients & seniors",
+  "Assistant Healthcare Administrator Jamila Sultan Welfare Society Projects",
+  "CEO/Founder of Ezaan Health and Education Foundation",
+  "HOD Physiotherapy Department Dr Essa Physiotherapy Center",
+  "MSK and Pain Specialist & AKUH Alumni",
 ];
 
 export function About() {
@@ -23,16 +23,16 @@ export function About() {
               <div className="relative aspect-square overflow-hidden shadow-premium grayscale-[0.3] group-hover:grayscale-0 transition-all duration-700">
                 <Image
                   src="/assets/dr-tanveer.jpg"
-                  alt="Muhammad Tanveer, Physiotherapist in Karachi"
+                  alt="Muhammad Tanveer, Healthcare Administrator & Physiotherapist"
                   fill
                   className="object-cover scale-105 group-hover:scale-100 transition-transform duration-700"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
               </div>
               <div className="absolute -bottom-8 -right-8 bg-primary p-8 shadow-premium hidden md:block">
-                <div className="text-white font-display font-bold text-2xl leading-none">10+</div>
+                <div className="text-white font-display font-bold text-2xl leading-none">5+</div>
                 <div className="text-[10px] uppercase tracking-widest font-bold text-white/60 mt-2 whitespace-nowrap">
-                  Years of Excellence
+                  Years of Expertise
                 </div>
               </div>
             </div>
@@ -46,14 +46,15 @@ export function About() {
               </span>
             </div>
             <h2 className="text-4xl lg:text-6xl font-display font-bold text-ink leading-tight mb-8">
-              Medical <span className="italic text-primary">Precision</span> Meets Compassionate
-              Care.
+              Medical <span className="italic text-primary">Precision</span> Meets Administrative
+              Excellence.
             </h2>
             <p className="text-lg text-muted-foreground leading-relaxed mb-10 font-medium">
-              Muhammad Tanveer is a dedicated DPT specialist committed to restoring human movement.
-              His approach integrates advanced manual therapy with evidence-based rehabilitation,
-              ensuring each patient receives an elite healthcare experience tailored to their unique
-              physiological needs.
+              Muhammad Tanveer is a multi-faceted healthcare leader, serving as the Assistant
+              Healthcare Administrator for Jamila Sultan Welfare Society Projects and the
+              CEO/Founder of Ezaan Health and Education Foundation. As an Alumini of Aga Khan
+              University Hospital, he brings elite clinical standards to his role as HOD of the
+              Physiotherapy Department at Dr Essa Physiotherapy and Rehabilitation Center.
             </p>
 
             <ul className="grid sm:grid-cols-2 gap-6 mb-12">

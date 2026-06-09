@@ -3,6 +3,7 @@
 import { z } from "zod";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { createClient } from "@/integrations/supabase/server";
+import { getQdrantClient } from "./qdrant.server";
 
 async function getAuthenticatedUserId() {
   const supabase = await createClient();
@@ -104,6 +105,15 @@ export async function getAnalytics() {
     .order("created_at", { ascending: false })
     .limit(20);
 
+  let qdrantStatus = "Disconnected";
+  try {
+    const qdrant = getQdrantClient();
+    const collections = await qdrant.getCollections();
+    if (collections) qdrantStatus = "Connected";
+  } catch (e) {
+    console.error("Qdrant health check failed", e);
+  }
+
   return {
     conversations: convos.count ?? 0,
     messages: msgs.count ?? 0,
@@ -111,5 +121,6 @@ export async function getAnalytics() {
     documents: docs.count ?? 0,
     leadStatus,
     recentQuestions: (topQuestions ?? []).map((q) => q.content),
+    qdrantStatus,
   };
 }
