@@ -1,10 +1,12 @@
-import pdf from "pdf-parse";
+import { PDFParse } from "pdf-parse";
 import mammoth from "mammoth";
-import cheerio from "cheerio";
+import * as cheerio from "cheerio";
 
 export async function parsePdf(buffer: Buffer): Promise<string> {
-  const data = await pdf(buffer);
-  return data.text;
+  const parser = new PDFParse({ data: new Uint8Array(buffer) });
+  const result = await parser.getText();
+  await parser.destroy();
+  return result.text;
 }
 
 export async function parseDocx(buffer: Buffer): Promise<string> {

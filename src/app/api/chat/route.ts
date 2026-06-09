@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
       limit: 5,
       with_payload: true,
     });
-    context = results.map(r => (r.payload as any).content).join("\n\n");
+    context = results.map((r) => (r.payload as any).content).join("\n\n");
   } catch (e) {
     console.error("Retrieval failed", e);
   }
@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
   const systemPrompt = `You are a medical assistant. Answer ONLY from this CONTEXT:\n${context || "No context found."}\n\nIf not in context, say you don't know and offer WhatsApp +92 342 7160092.`;
 
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-  
+
   const chat = model.startChat({
     history: history.map((m: any) => ({
       role: m.role === "user" ? "user" : "model",

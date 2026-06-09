@@ -40,18 +40,18 @@ export async function chatComplete(
 
   try {
     const modelName = opts.model || "gemini-1.5-flash";
-    const model = genAI.getGenerativeModel({ 
+    const model = genAI.getGenerativeModel({
       model: modelName,
       generationConfig: {
         temperature: opts.temperature ?? 0.7,
-      }
+      },
     });
 
-    const systemMsg = messages.find(m => m.role === "system");
-    const otherMsgs = messages.filter(m => m.role !== "system");
+    const systemMsg = messages.find((m) => m.role === "system");
+    const otherMsgs = messages.filter((m) => m.role !== "system");
 
     const chat = model.startChat({
-      history: otherMsgs.slice(0, -1).map(m => ({
+      history: otherMsgs.slice(0, -1).map((m) => ({
         role: m.role === "user" ? "user" : "model",
         parts: [{ text: m.content }],
       })),

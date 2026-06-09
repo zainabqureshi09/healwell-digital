@@ -121,7 +121,8 @@ export function Hero() {
               variants={itemVariants}
               className="text-xl lg:text-2xl text-muted-foreground max-w-2xl leading-relaxed mb-12 font-medium"
             >
-              Assistant Healthcare Administrator at Jamila Sultan Welfare Society, CEO of Ezaan Health, and HOD Physiotherapy at Dr Essa Center. AKUH Alumni & MSK Specialist.
+              Assistant Healthcare Administrator at Jamila Sultan Welfare Society, CEO of Ezaan
+              Health, and HOD Physiotherapy at Dr Essa Center. AKUH Alumni & MSK Specialist.
             </motion.p>
 
             {/* CTA */}

@@ -61,7 +61,7 @@ export async function ragChat(input: z.infer<typeof ragChatSchema>) {
 
   // 2. Retrieve from Qdrant
   let context = "";
-  let citations: string[] = [];
+  const citations: string[] = [];
   let maxScore = 0;
 
   try {
@@ -109,12 +109,12 @@ export async function ragChat(input: z.infer<typeof ragChatSchema>) {
     { conversation_id: conversationId, role: "assistant", content: reply },
   ]);
 
-  return { 
-    reply, 
-    bookIntent, 
-    conversationId, 
-    citations, 
-    confidence: Math.round(maxScore * 100) 
+  return {
+    reply,
+    bookIntent,
+    conversationId,
+    citations,
+    confidence: Math.round(maxScore * 100),
   };
 }
 

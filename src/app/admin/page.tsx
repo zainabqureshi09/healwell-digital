@@ -10,7 +10,13 @@ import {
   updateLeadStatus,
   getAnalytics,
 } from "@/lib/admin.functions";
-import { listDocuments, ingestDocument, deleteDocument, processFileAndIngest, processUrlAndIngest } from "@/lib/kb.functions";
+import {
+  listDocuments,
+  ingestDocument,
+  deleteDocument,
+  processFileAndIngest,
+  processUrlAndIngest,
+} from "@/lib/kb.functions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -18,7 +24,16 @@ import { Card } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { Loader2, Trash2, LogOut, Upload, Globe, FileText, CheckCircle2, AlertCircle } from "lucide-react";
+import {
+  Loader2,
+  Trash2,
+  LogOut,
+  Upload,
+  Globe,
+  FileText,
+  CheckCircle2,
+  AlertCircle,
+} from "lucide-react";
 
 export default function AdminPage() {
   const router = useRouter();
@@ -262,9 +277,7 @@ function KBPanel() {
 
         <div className="bg-white p-8 border border-border shadow-premium">
           <h2 className="text-xl font-display font-bold text-ink mb-2">Document Upload</h2>
-          <p className="text-xs text-muted-foreground mb-8">
-            PDF, DOCX, or TXT (Max 10MB)
-          </p>
+          <p className="text-xs text-muted-foreground mb-8">PDF, DOCX, or TXT (Max 10MB)</p>
           <div className="relative group">
             <input
               type="file"
@@ -284,9 +297,7 @@ function KBPanel() {
 
         <div className="bg-white p-8 border border-border shadow-premium">
           <h2 className="text-xl font-display font-bold text-ink mb-2">Web Scraper</h2>
-          <p className="text-xs text-muted-foreground mb-8">
-            Crawl content from a medical URL.
-          </p>
+          <p className="text-xs text-muted-foreground mb-8">Crawl content from a medical URL.</p>
           <form onSubmit={submitUrl} className="flex gap-4">
             <input
               type="url"
@@ -300,7 +311,11 @@ function KBPanel() {
               disabled={busy}
               className="bg-primary text-white px-8 py-4 text-[10px] font-bold uppercase hover:bg-secondary disabled:opacity-50"
             >
-              {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Globe className="h-3.5 w-3.5" />}
+              {busy ? (
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+              ) : (
+                <Globe className="h-3.5 w-3.5" />
+              )}
             </button>
           </form>
         </div>
@@ -541,12 +556,16 @@ function AnalyticsPanel() {
                   Qdrant Vector DB
                 </span>
                 <div className="flex items-center gap-2">
-                  <span className={`w-2 h-2 rounded-full ${stats.qdrantStatus === "Connected" ? "bg-green-500" : "bg-red-500"}`} />
+                  <span
+                    className={`w-2 h-2 rounded-full ${stats.qdrantStatus === "Connected" ? "bg-green-500" : "bg-red-500"}`}
+                  />
                   <span className="text-sm font-bold text-ink">{stats.qdrantStatus}</span>
                 </div>
               </div>
-              
-              <h4 className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground mt-8 mb-4">Inquiry Pipeline</h4>
+
+              <h4 className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground mt-8 mb-4">
+                Inquiry Pipeline
+              </h4>
               {Object.entries(stats.leadStatus).map(([k, v]) => (
                 <div
                   key={k}

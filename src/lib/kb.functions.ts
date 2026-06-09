@@ -100,9 +100,9 @@ export async function listDocuments() {
 export async function deleteDocument(input: { id: string }) {
   const userId = await getAuthenticatedUserId();
   await assertAdmin(userId);
-  
+
   const qdrant = getQdrantClient();
-  
+
   // 1. Delete from Qdrant
   await qdrant.delete(COLLECTION_NAME, {
     filter: {
@@ -113,16 +113,16 @@ export async function deleteDocument(input: { id: string }) {
   // 2. Delete from Supabase
   const { error } = await supabaseAdmin.from("kb_documents").delete().eq("id", input.id);
   if (error) throw new Error(error.message);
-  
+
   return { ok: true };
 }
 
 export async function processFileAndIngest(formData: FormData) {
   const file = formData.get("file") as File;
-  const title = formData.get("title") as string || file.name;
-  
+  const title = (formData.get("title") as string) || file.name;
+
   if (!file) throw new Error("No file provided");
-  
+
   const buffer = Buffer.from(await file.arrayBuffer());
   let content = "";
   let sourceType = "file";
@@ -148,6 +148,6 @@ export async function processUrlAndIngest(url: string) {
   const html = await res.text();
   const content = await parseHtml(html);
   const title = url; // or extract from meta tags
-  
+
   return await ingestDocument({ title, content, sourceType: "url", metadata: { url } });
 }

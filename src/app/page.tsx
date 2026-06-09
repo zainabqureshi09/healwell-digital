@@ -30,7 +30,9 @@ export default function IndexPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap items-center justify-between gap-8">
             <div className="max-w-md">
-              <h2 className="text-2xl font-display font-bold text-ink mb-2">Healthcare Leadership</h2>
+              <h2 className="text-2xl font-display font-bold text-ink mb-2">
+                Healthcare Leadership
+              </h2>
               <p className="text-sm text-muted-foreground font-medium">
                 Combining administrative excellence with clinical mastery.
               </p>

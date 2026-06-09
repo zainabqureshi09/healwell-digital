@@ -55,8 +55,8 @@ export function About() {
               Healthcare Administrator for Jamila Sultan Welfare Society Projects and the
               CEO/Founder of Ezaan Health and Education Foundation. As an Alumini of Aga Khan
               University Hospital and MSK and Pain Specialist, he currently serves as HOD of the
-              Physiotherapy Department at Dr Essa Physiotherapy and Rehabilitation Center,
-              formerly leading the department at The Health Bank Global Pakistan.
+              Physiotherapy Department at Dr Essa Physiotherapy and Rehabilitation Center, formerly
+              leading the department at The Health Bank Global Pakistan.
             </p>
 
             <ul className="grid sm:grid-cols-2 gap-6 mb-12">
